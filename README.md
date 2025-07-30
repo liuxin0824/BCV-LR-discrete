@@ -2,29 +2,28 @@
 
 
 ### R3
-
+___
 >**Q1：Stage 3. (as per the summary above), in which the latent action model is finetuned and the action decoder is trained, requires real actions to be observed via environment interaction. It is unclear what is the impact of the schedule of environment interactions, how exactly the phases are optimally alternated so as to sample iteratively from the policy learned online via the concurrent step 4. Does this matter?**
 
-The BCV-LR online stage contains three parts. First, we a) allow the agent to interact with the environment for a fixed number of steps using its policy and enrich the experience buffer. Immediately after that, b) we perform finetuning of the latent action and training of the action decoder on the experience buffer. Then, c) using expert videos, we train the latent policy to imitate the finetuned latent action. After this, we will return to part a) and complete the cyclic online policy learning. This alternation is intuitive, that is, first collect new data of higher quality, then use the new data to fine-tune the latent action, and finally let the policy learn the fine-tuned latent action to achieve performance improvement. You can refer to the Pseudo Code 
+The BCV-LR online stage contains three parts. First, we a) allow the agent to interact with the environment for a fixed number of steps using its policy and enrich the experience buffer. Immediately after that, b) we perform finetuning of the latent action and training of the action decoder on the experience buffer. Then, c) using expert videos, we train the latent policy to imitate the finetuned latent action. After this, we will return to part a) and complete the cyclic online policy learning. This alternation is intuitive, that is, first collect new data of higher quality, then use the new data to fine-tune the latent action, and finally let the policy learn the fine-tuned latent action to achieve performance improvement. You can refer to Sec.A.1 (Appendix) for Pseudo Code.
 
 In previous experiments, we did not adjust the number of steps for each interaction, but kept it fixed at a relatively large value from start to finish (for example, we fixed the step number of step (1) as 1000) and ultimately achieved satisfactory results. To answer your question, we conduct additional experiments, where use a smaller interation number (1000->2) and correspondingly reduced the number of update times for latent actions (100->1) and latent policies (1000->2) after each interaction, making BCV-LR perform in a fashion akin to off-policy RL. The results in Table I show that it can still achieve effective learning when the step number is reduced, which demonstrates that BCV-LR is robust to the schedule of environment interactions.
-
 **Table I**
 | task  | BCV-LR(1000->2) |  BCV-LR |   DrQv2| / |video|
 | - | - | - | - | - | - | 
 | reacher_hard |  875 ± 65 |  **900 ± 31**  | 92 ± 98  | | 967 |
 | finger_spin  | **956 ± 20**  | 942 ± 48  | 374 ± 264 || 981|
-
-
+___
 >**Q2: How does the method compare to performing the steps in a fashion akin to LAPA? (No online learning, only imitation learning alignment on ground truth expert action?**
 
-To answer your questions, we further conduct additional experiments, where we let BCV-LR performs latent action finetuning and policy imitation with a few action-labeled expert transitions. Concretely, we maintain the original pre-training stage, while use 10k offline expert transitions to achieve offline imitation learning alignment. The results in Table demonstrate that BCV-LR can also well achieve offline imitation learning alignment. 
+To answer your questions, we further conduct additional experiments, where we let BCV-LR performs latent action finetuning and policy imitation with a few action-labeled expert transitions. Concretely, we maintain the original pre-training stage, while use 10k offline expert transitions to achieve offline imitation learning alignment. The results in Table (RL denotes DrQv2 for DMControl while PPO for procgen) demonstrate that BCV-LR can also well achieve offline imitation learning alignment. Of course, we would like to say that BCV-LR is designed for the ILV (imitation learning from videos), a much harder variant of the classical ILO (imitation learning from observation only) problem, where the employment of unsupervised online policy training adheres to the norms of this field.
 
 **Table II**
-| task  | BCV-LR-offline |  BCV-LR |   DrQv2| / |video|
+| task  | BCV-LR-offline |  BCV-LR |  RL | / |video|
 | - | - | - | - | - | - | 
-| reacher_hard |  875 ± 65 |  **900 ± 31**  | 92 ± 98  | | 967 |
-| finger_spin  | **956 ± 20**  | 942 ± 48  | 374 ± 264 || 981|
+| reacher_hard |  **938 ± 44** |  900 ± 31  | 92 ± 98  | | 967 |
+| finger_spin  | **978 ± 7**  | 942 ± 48  | 374 ± 264 || 981|
+| fruitbot  | **27.7 ± 0.4**  | 27.5 ± 1.5  | -1.9 ± 1.0 || 29.9|
 
 
 
