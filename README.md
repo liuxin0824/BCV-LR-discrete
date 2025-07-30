@@ -72,6 +72,14 @@ As per your suggestions, we first conducted additional experiments, where we fin
 |reacher_hard|876 ± 15|**906 ± 65**|900 ± 31||967|
 |finger_spin|937 ± 26|920 ± 57|**942 ± 48**||981|
 
+Then, we provide the experiments to show the impact on performance of not updating the latent action predictor in the online phase. Partial results are presented in Table V, demonstrating that utilizing the environmental actions to finetune pre-trained latent actions is a crucial step in BCV-LR, especially in DMControl tasks. This is because, compared to discrete video game benchmarks, DMControl features continuous action spaces and strong partial observability. These characteristics make unsupervised latent action extraction more challenging, thereby leading to relatively higher gains during the online fine-tuning phase. Please refer to Sec. 4.4 for more results, where we also experimentally demonstrate the necessity of pre-trained latent actions for DMControl.
+
+**Table V**
+||Finetuning with $L_{la}$|Finetuning with $L_{ft}$|No visual finetuning|/|video|
+|-|-|-|-|-|-| 
+|reacher_hard|876 ± 15|**906 ± 65**|900 ± 31||967|
+|finger_spin|937 ± 26|920 ± 57|**942 ± 48**||981|
+
 
 
 
