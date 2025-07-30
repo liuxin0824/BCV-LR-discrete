@@ -35,7 +35,7 @@ If you have any questions, please let us know, thanks!
 
 As we illustrated in answer to W2, LAPO also focuses on single-task setting. FICC indeed provides multi-task pre-training experiments while also conducts single-task experiments as their main results. In addition, the video dataset we use in Procgen is consistent with that of LAPO, which means the quality of expert data is the same for all video-based methods. As per your request, we have conducted extra experiments where we replaced the reinforcement learning loss of LAPO with the BC loss and compared it with our BCV-LR. The results in Table I demonstrate that LAPO-BC enables effective policy learning in some tasks while our BCV-LR still exhibits performance advantages. In addition, we also show that our BCV-LR can generalize to multi-task pre-training, which is detailed in answers to Q4.
 **Table I**
-| task  | BCV-LR |  LAPO-BC |  PPO | / |video|
+| Task  | BCV-LR |  LAPO-BC |  PPO | / |video|
 | - | - | - | - | - | - | 
 | fruitbot |  **27.5 ± 1.5** |  6.2 ± 1.9  | -1.9 ± 1.0  | | 29.9 |
 | heist  | **9.3 ± 0.1**  | 9.2 ± 0.3  | 3.7 ± 0.2 || 9.7 |
@@ -47,7 +47,7 @@ As we illustrated in answer to W2, LAPO also focuses on single-task setting. FIC
 According to your suggestions, we conducted additional experiments in Procgen to test the multi-task pre-training ability of BCV-LR, which follows the settings of FICC mutli-task experiments. Concretely, we pre-trains one model on mixed videos of 'bigfish', 'maze', and 'starpilot', and then finetunned the pre-trained models in these seen tasks seperately. Different from FICC, we also employ two unseen tasks into evaluations. The results in Table II show that BCV-LR enables effective policy imitation on all tasks. It achieves robust multi-task pre-training, where the pre-trained knowledge can be shared across both seen and unseen domains.
 
 **Table II**
-|||BCV-LR-MT(share pre-training)|PPO|/|BCV-LR(single-task)|
+||Task|BCV-LR(multi-task)|PPO(single-task)|/|BCV-LR(single-task)|
 |-|-|-|-|-|-| 
 |seen|bigfish|**32.2 ± 1.0**|0.9 ± 0.1||35.9|
 ||maze|**9.6 ± 0.1**|5.0 ± 0.7||9.9|
@@ -67,7 +67,7 @@ Then, we provide the video data efficiency experimental results. We provide BCV-
 As per your suggestions, we first conducted additional experiments, where we finetune the self-supervised encoder with $L_{la}$ and $L_{ft}$ repectively. The results in Table IV demonstrate that whether finetuning self-supervised visual representation doesn't yield apprent effct on policy performance. A similar phenomenon has been observed in self-supervised RL, leading some works to fine-tune self-supervised representations while others opt to freeze them.
 
 **Table IV**
-||Finetuning with $L_{la}$|Finetuning with $L_{ft}$|No visual finetuning|
+|Task|Finetuning with $L_{la}$|Finetuning with $L_{ft}$|No visual finetuning|
 |-|-|-|-|
 |reacher_hard|876 ± 15|**906 ± 65**|900 ± 31|
 |finger_spin|937 ± 26|920 ± 57|**942 ± 48**|
@@ -75,12 +75,12 @@ As per your suggestions, we first conducted additional experiments, where we fin
 Then, we provide the experiments to show the impact on performance of not updating the latent action predictor with $L_{ft}$ in the online phase. Partial results are presented in Table V, demonstrating that utilizing the environmental actions to finetune pre-trained latent actions is a crucial step in BCV-LR, especially in DMControl tasks. This is because, compared to discrete video game benchmarks, DMControl features continuous action spaces and strong partial observability. These characteristics make unsupervised latent action extraction more challenging, thereby leading to relatively higher gains during the online latent action fine-tuning. Please refer to Sec.4.4 for more ablation results, where we also experimentally demonstrate the necessity of pre-training latent actions for continuous control.
 
 **Table V**
-|||BCV-LR|BCV-LR w/o $L_{ft}$|
+||Task|BCV-LR|BCV-LR w/o ft|
 |-|-|-|-|
-|DMControl|point_mass_easy|**123 ± 39**|**906 ± 65**|
-||jaco_reach_bottom_left|937 ± 26|920 ± 57|
-|Procgen|starpilot|876 ± 15|**906 ± 65**|
-||reacher_hard|937 ± 26|920 ± 57|
+|DMControl|point_mass_easy|**800 ± 25**|22 ± 2|
+||jaco_reach_bottom_left|**123 ± 39**|15 ± 10|
+|Procgen|starpilot|**54.8 ± 1.4**|29.2 ± 10.6|
+||fruitbot|**27.5 ± 1.5**|24.2 ± 2.0|
 
 
 
