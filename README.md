@@ -1,6 +1,18 @@
 # BCV-LR
 
 
+### R3
+
+>**Q1：Stage 3. (as per the summary above), in which the latent action model is finetuned and the action decoder is trained, requires real actions to be observed via environment interaction. It is unclear what is the impact of the schedule of environment interactions, how exactly the phases are optimally alternated so as to sample iteratively from the policy learned online via the concurrent step 4. Does this matter?**
+
+The BCV-LR online stage contains three steps. First, we (1) allow the agent to interact with the environment for a fixed number of steps using its policy and enrich the experience buffer. Immediately after that, (2) we perform finetuning of the latent action and training of the action decoder on the experience buffer. Then, (3) using expert videos, we train the latent policy to imitate the finetuned latent action. After this, we will return to step (1) and complete the cyclic online policy learning. This alternation is intuitive, that is, first collect new data of higher quality, then use the new data to fine-tune the latent action, and finally let the policy learn the fine-tuned latent action to achieve performance improvement. You can refer to the Pseudo Code 
+
+In previous experiments, we did not adjust the number of steps for each interaction, but kept it fixed at a relatively large value from start to finish (for example, we fixed the step number of step (1) as 1000) and ultimately achieved satisfactory results. To answer your question, we further attempted to use a smaller number of steps (updating every two interactions) and correspondingly reduced the number of updates for latent actions (once) and latent policies (twice) after each interaction, making BCV-LR in a fashion akin to off-policy RL. The results in Table I show that it can still achieve effective learning when the step number is reduced, which demonstrates the robustness of our method.
+| tasks  | BCV-LR (1000)  | BCV-LR (2) | BCO  |UPESV |TACO  | DrQv2| / |video|
+| - | - | - | - | - | - |  - | - | - |
+| reacher_hard | 900 ± 31   | 158  | 336  | 18     | 310  | 232 | / | 698|
+| finger_spin  | 942 ± 48   | 0.20  | 0.31  | 0.03     | 0.45  | 0.34 | /| 1.00|
+
 
 
 ### R4
