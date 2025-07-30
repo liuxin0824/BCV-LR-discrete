@@ -93,7 +93,6 @@ ___
 [5]Mask-based Latent Reconstruction for Reinforcement Learning. Neurips 22
 [6]Learning to act without actions. ICLR 24
 
-Adding some ablation experiments would be more helpful in explaining what factors make BCV-LR more effective than previous works. For example, a) the impact on performance of whether the representation learning part is directly frozen after pre-training or updated with L_la or L_ft and b) the impact on performance of not updating the latent action predictor in the online phase.
 
 
 
