@@ -31,8 +31,8 @@ Thanks for your careful reading and we indeed missed this important related work
 
 If you have any questions, please let us know, thanks!
 >**Q3:I am curious whether the effectiveness of direct behavior cloning in the online phase is related to the single-task setting or the quality of expert data. The offline phase of BCV-LR is quite similar to LAPO and FICC, while both LAPO and FICC avoid direct behavior cloning in the online phase and choose to use online rewards for policy adjustment in the multitask setting. It would be better if a direct online BC variant of LAPO were involved in the comparison, which means the online reward will also be excluded in this setting, and may further illustrate this aspect.**
+
 As we illustrated in answer to W2, LAPO also focuses on single-task setting. FICC indeed provides multi-task pre-training experiments while also conducts single-task experiments as their main results. In addition, the video dataset we use in Procgen is consistent with that of LAPO, which means the quality of expert data is the same for all video-based methods. As per your request, we have conducted extra experiments where we replaced the reinforcement learning loss of LAPO with the BC loss and compared it with our BCV-LR. The results in Table I demonstrate that LAPO-BC enables effective policy learning in some tasks while our BCV-LR still exhibits performance advantages. In addition, we also show that our BCV-LR can generalize to multi-task pre-training, which is detailed in answers to Q4.
->
 **Table I**
 | task  | BCV-LR |  LAPO-BC |  PPO | / |video|
 | - | - | - | - | - | - | 
@@ -41,8 +41,16 @@ As we illustrated in answer to W2, LAPO also focuses on single-task setting. FIC
 | bossfight  | **10.3 ± 0.3**  | 0.0 ± 0.0  | 0.1 ± 0.1 || 11.6 |
 | chaser  | **3.1 ± 0.5**  | 0.6 ± 0.0  | 0.4 ± 0.2 || 10.0|
 
+>**Q4:The paper lacks experiments in a multi-task setting or a discussion on the relationship between the expert video scale and the performance in the single-task setting. Can BCV-LR generalize to new tasks through multi-task data? Or, for new tasks lacking sufficient data, how much offline data is required for BCV-LR to fulfill behavior cloning? Otherwise, the prerequisite of obtaining sufficient data often implies having a well-performing in-domain policy on the task, reducing the significance of behavior cloning from expert videos.**
 
-The moltivation
+**Table II**
+|||BCV-LR-MT|/|PPO|BCV-LR|
+|-|-|-|-|-|-| 
+|seen|bigfish|32.2 ± 1.0||0.9 ± 0.1|35.9|
+||maze|9.6 ± 0.1||5.0 ± 0.7|9.9|
+||starpilot|44.3 ± 1.9||2.6 ± 0.9|54.8|
+|unseen|bossfight|5.5 ± 0.3||0.1 ± 0.1|10.3|
+||dodgeball|9.5 ± 0.3||1.1 ± 0.2|12.4|
 
 ___
 [1]Learning Video-Conditioned Policy on Unlabelled Data with Joint Embedding Predictive Transformer. ICLR 25
