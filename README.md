@@ -1,5 +1,9 @@
 # BCV-LR
 
+
+
+
+### R4
 ___
 >**Q1：How general is the learned encoder? Is the shift image + contrastive loss learn useful features for non-video games, say real world robotics tasks? Or will this only work for relatively simplistic videos/environments?**
 
@@ -8,14 +12,23 @@ ___
 
 >**Q2:How well does the mapping from latent action to action work in more complex environments, e.g., robot controls rather than just video game controls?**
 
-In addition to the video games, we also demonstrate the advantages of BCV-LR on DMControl benchmark which consists of several continuous robotic control tasks. We summarize the average results here in Table I . More detailed results are provided in  
+In addition to the video games, we also demonstrate the advantages of BCV-LR on DMControl benchmark which consists of several continuous robotic control tasks. We summarize the average results below. More details are provided in Sec.4.3 (mainpaper) and Sec.C.1 (Appendix).
 
-In addition, we further conducted additional experiments in Metaworld manipulation benchmark. Only 50k environmental steps are allowed for each Metaworld task, with remaining settings similar to that of DMControl. Results are shown in Table 2. In this interaction-limited situation, BCV-LR can still derive effective manipulation skills from expert videos without accessing expert actions and rewards, which demonstrates its potential for generalizing to real-world manipulation tasks.
+| DMControl-8-tasks  | BCV-LR(ours)   | LAIFO   | BCO  |UPESV |TACO  | DrQv2| / |video|
+| - | - | - | - | - | - |  - | - | - |
+| Mean Score | **604**   | 158  | 336  | 18     | 310  | 232 | / | 698|
+| Video-norm Mean Score  | **0.78**   | 0.20  | 0.31  | 0.03     | 0.45  | 0.34 | /| 1.00|
 
-| Task   | η=0.02   | η=0.1    | η=0.5    | adaptive η | DVFB    |
-| - | - | - | - | - | - |
-| Stand  | 954±5    | 951±10   | 961±8    | 960±5      | 965±7   |
-| Walk   | 753±32   | 765±18   | 752±31   | 820±77     | 908±21  |
+
+In addition, we further conducted additional experiments in Metaworld manipulation benchmark. Only 50k environmental steps are allowed for each Metaworld task, with remaining settings similar to that of DMControl. Results are shown below. In this interaction-limited situation, BCV-LR can still derive effective manipulation skills from expert videos without accessing expert actions and rewards, which demonstrates its wider range of applications and potential for generalizing to real-world manipulation tasks.
+
+| Metaworld  | BCV-LR(ours) | BCO   | DrQv2| / |video|
+| - | - | - | - | - | - | 
+| Faucet-open| **0.82 ± 0.20**   | 0.13 ± 0.19  | 0 ± 0 | /  | 1.00 |
+| Reach| **0.63 ± 0.25**   | 0.03 ± 0.05  |  | /  | 1.00 |
+| Drawer-open| **0.92 ± 0.12**   | 0.13 ± 0.09  |0 ± 0  | /  | 1.00 |
+| Faucet-close| **0.98 ± 0.04**   | 0 ± 0 | 0.70 ± 0.30 | /  | 1.00 |
+| Mean SR| **0.84**   | 0.07  |  | /  | 1.00 |
 
 ___
 
