@@ -54,7 +54,7 @@ First, we conducted additional experiments in Procgen to test the multi-task pre
 |unseen|bossfight|5.5 ± 0.3||0.1 ± 0.1|10.3|
 ||dodgeball|9.5 ± 0.3||1.1 ± 0.2|12.4|
 
-Then, we provide the video data efficiency experiments. We provide BCV-LR with 5k, 20k, 50k, and 100k expert video transitions. The results shown i
+Then, we provide the video data efficiency experiments. We provide BCV-LR with 5k, 20k, 50k, and 100k (default in main experiments) expert video transitions. Results demonstrate that 20k transitions enables effective policy learning while 50k transitions can support near-expert policy performance. You can refer to Appendix C.5 for curves and more details.
 
 **Table III**
 |Video data of BCV-LR|5k|20k|50k|100k|/|video|
@@ -70,6 +70,8 @@ ___
 [4]Value-Consistent Representation Learning for Data-Efficient Reinforcement Learning. AAAI 23
 [5]Mask-based Latent Reconstruction for Reinforcement Learning. Neurips 22
 [6]Learning to act without actions. ICLR 24
+
+Adding some ablation experiments would be more helpful in explaining what factors make BCV-LR more effective than previous works. For example, a) the impact on performance of whether the representation learning part is directly frozen after pre-training or updated with L_la or L_ft and b) the impact on performance of not updating the latent action predictor in the online phase.
 
 
 
