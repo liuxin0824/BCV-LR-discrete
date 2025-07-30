@@ -8,7 +8,10 @@ ___
 In the submitted version, all experiments are conducted under single-task settings. This is mainly due to two reasons: first, whether it is possible to balance video imitation performance and sampling efficiency in single-task settings remains an open problem; second, the recent advanced pure ILV (without reward) works mainly achieve evaluation under single-task settings. We agree with the reviewer that achieving video cloning under multi-task settings are more meaningful! As you suggested, we have supplemented multi-task experiments in a fashion akin to FICC, as shown in answer to Q3.
 ___
 >**W2：The LAPO in the baseline is designed for the pre-training on multi-task data, which may affect comparisons.**
-
+LAPO has indeed inspired many works on multi-task pre-training. However, according to the final published version of LAPO and its open-source code, it uses a 'full' distribution for each task in Procgen to ensure intra-task diversity (e.g., the 'maze' task includes mazes of different sizes, colors, and layouts) while does not perform cross-task 'multi-task learning' (i.e., it achieves pre-training on 'maze' videos and then performs online learning in the 'maze' task). The Procgen experiments of BCV-LR have strictly followed LAPO's setup in terms of environment configuration, thus ensuring a fair comparison. Please feel free to let us know if you have any further questions!
+___
+>**W3：Additionally, incorporating extra ablation studies and baselines could further solidify this work.**
+According to your constructive reviews, we have further supplemented several additional experiments and improve our work!
 ___
 >**Q1
 
