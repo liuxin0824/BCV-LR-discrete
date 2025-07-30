@@ -44,7 +44,7 @@ As we illustrated in answer to W2, LAPO also focuses on single-task setting. FIC
 
 >**answer to Q4**
 
-First, we conducted additional experiments in Procgen to test the multi-task pre-training ability of BCV-LR, which follows the settings of FICC mutli-task experiments. Concretely, we pre-trains one model on mixed videos of 'bigfish', 'maze', and 'starpilot', and then finetunned the pre-trained models in these seen tasks seperately. Different from FICC, we also employ two unseen tasks into evaluations. The results in Table II show that BCV-LR enables effective policy imitation on all tasks. It achieves robust multi-task pre-training, where the pre-trained knowledge can be shared across both seen and unseen domains.
+According to your suggestions, we conducted additional experiments in Procgen to test the multi-task pre-training ability of BCV-LR, which follows the settings of FICC mutli-task experiments. Concretely, we pre-trains one model on mixed videos of 'bigfish', 'maze', and 'starpilot', and then finetunned the pre-trained models in these seen tasks seperately. Different from FICC, we also employ two unseen tasks into evaluations. The results in Table II show that BCV-LR enables effective policy imitation on all tasks. It achieves robust multi-task pre-training, where the pre-trained knowledge can be shared across both seen and unseen domains.
 
 **Table II**
 |||BCV-LR-MT(share pre-training)|PPO|/|BCV-LR(single-task)|
@@ -55,7 +55,7 @@ First, we conducted additional experiments in Procgen to test the multi-task pre
 |unseen|bossfight|**5.5 ± 0.3**|0.1 ± 0.1||10.3|
 ||dodgeball|**9.5 ± 0.3**|1.1 ± 0.2||12.4|
 
-Then, we provide the video data efficiency experiments. We provide BCV-LR with 5k, 20k, 50k, and 100k (default in main experiments) expert video transitions. Results demonstrate that 20k transitions enables effective policy learning while 50k transitions can support near-expert policy performance. You can refer to Appendix C.5 for curves and more details.
+Then, we provide the video data efficiency experimental results. We provide BCV-LR with 5k, 20k, 50k, and 100k (default in main experiments) expert video transitions. Results demonstrate that BCV-LR enables effective policy learning with only 20k transitions. 50k transitions can support near-expert policy performance. You can refer to Appendix C.5 for curves and more details.
 
 **Table III**
 |Video data of BCV-LR|5k|20k|50k|100k|/|video|
@@ -64,6 +64,13 @@ Then, we provide the video data efficiency experiments. We provide BCV-LR with 5
 |finger_spin|596 ± 17|901 ± 33|905 ± 70|**942 ± 48**||981|
 
 >**answer to Q5**
+As per your suggestions, we first conducted additional experiments, where we finetune the self-supervised encoder with $L_{la}$ and $L_{ft}$ repectively. The results in Table IV demonstrate that whether finetuning self-supervised visual representation doesn't yield apprent effct on policy performance. A similar phenomenon has been observed in self-supervised RL, leading some works to fine-tune self-supervised representations while others opt to freeze them.
+
+**Table IV**
+||Finetuning with $L_{la}$|Finetuning with $L_{ft}$|No visual finetuning|/|video|
+|-|-|-|-|-|-| 
+|reacher_hard|876 ± 15|**906 ± 65**|900 ± 31||967|
+|finger_spin|937 ± 26|920 ± 57|**942 ± 48**||981|
 
 
 
