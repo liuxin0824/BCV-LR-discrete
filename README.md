@@ -4,19 +4,28 @@
 We appreciate your careful reading and professional comments! In response to your feedback, we have supplemented the missing important works and further conducted several supplementary experiments, which greatly improves the quality of the paper. We hope these revisions will meet your expectations!
 
 ___
->**W1：I am not sure whether the offline stage is individually conducted on each task or jointly conducted on a multi-task dataset. The practical significance of video behavior cloning in a single-task setting is limited.**
+>**W1:I am not sure whether the offline stage is individually conducted on each task or jointly conducted on a multi-task dataset. The practical significance of video behavior cloning in a single-task setting is limited.**
+
 In the submitted version, all experiments are conducted under single-task settings. This is mainly due to two reasons: first, whether it is possible to balance video imitation performance and sampling efficiency in single-task settings remains an open problem; second, the recent advanced pure ILV (without reward) works mainly achieve evaluation under single-task settings. We agree with the reviewer that achieving video cloning under multi-task settings are more meaningful! As you suggested, we have supplemented multi-task experiments in a fashion akin to FICC, as shown in answer to Q3.
 ___
->**W2：The LAPO in the baseline is designed for the pre-training on multi-task data, which may affect comparisons.**
+>**W2:The LAPO in the baseline is designed for the pre-training on multi-task data, which may affect comparisons.**
+
 LAPO has indeed inspired many works on multi-task pre-training. However, according to the final published version of LAPO and its open-source code, it uses a 'full' distribution for each task in Procgen to ensure intra-task diversity (e.g., the 'maze' task includes mazes of different sizes, colors, and layouts) while does not perform cross-task 'multi-task learning' (i.e., it achieves pre-training on 'maze' videos and then performs online learning in the 'maze' task). The Procgen experiments of BCV-LR have strictly followed LAPO's setup in terms of environment configuration, thus ensuring a fair comparison. Please feel free to let us know if you have any further questions!
 ___
->**W3：Additionally, incorporating extra ablation studies and baselines could further solidify this work.**
+>**W3:Additionally, incorporating extra ablation studies and baselines could further solidify this work.**
+
 According to your constructive reviews, we have further supplemented several additional experiments and improve our work!
 ___
->**Q1
+>**Q1:Does the phrase "without the need to access any other supervision" include the supervision of actions during the online phase? The supervision on the actions directly injects the environment's inverse dynamics knowledge and potentially adjusts the distribution of latent actions through alignment with ground-truth actions. If the phrase refers to merely using the latent reward information implicit in expert videos without online expert rewards for video behavior cloning, JEPT[1] may be an uncited but related work. Similarly, without using an explicit reward signal, JEPT can achieve generalization of one-shot visual imitation in some tasks with a mixture dataset.**
+
+As reviewer says, BCV-LR utilizes the knowledge 
+
+
+
 
 
 ### R3
+We are deeply grateful to the reviewer for your meticulous reading and positive recognition of our work! We have further enhanced our paper in light of your feedback and answered your questions 
 ___
 >**Q1&Weakness2：Stage 3. (as per the summary above), in which the latent action model is finetuned and the action decoder is trained, requires real actions to be observed via environment interaction. It is unclear what is the impact of the schedule of environment interactions, how exactly the phases are optimally alternated so as to sample iteratively from the policy learned online via the concurrent step 4. Does this matter?**
 
@@ -56,7 +65,13 @@ In addition, we further conducted additional experiments in Metaworld manipulati
 | Mean SR| **0.84**   | 0.07  | 0.16 |   | 1.00 |
 
 
+
+
+
+
+
 ### R4
+We greatly appreciate the reviewer's careful reading and recognition of our work! We have carefully reviewed your comments, addressed your questions, and further improved our paper based on your feedback!
 ___
 >**Q1：How general is the learned encoder? Is the shift image + contrastive loss learn useful features for non-video games, say real world robotics tasks? Or will this only work for relatively simplistic videos/environments?**
 
