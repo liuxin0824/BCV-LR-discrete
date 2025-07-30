@@ -16,11 +16,11 @@ ___
 
 According to your constructive reviews, we have further supplemented several additional experiments and improve our work!
 ___
->**Q1:Does the phrase "without the need to access any other supervision" include the supervision of actions during the online phase? The supervision on the actions directly injects the environment's inverse dynamics knowledge and potentially adjusts the distribution of latent actions through alignment with ground-truth actions. If the phrase refers to merely using the latent reward information implicit in expert videos without online expert rewards for video behavior cloning, JEPT[1] may be an uncited but related work. Similarly, without using an explicit reward signal, JEPT can achieve generalization of one-shot visual imitation in some tasks with a mixture dataset.**
+>**answer to Q1:**
 
 Thank you for your careful reading! BCV-LR does utilize information from environmental actions and our original intention was to emphasize that it does not rely on 'expert' action labels. We have replaced "without the need to access any other supervision" with "without the need to access any other expert supervision" to eliminate any ambiguity. Additionally, JPET[1] utilizes a mixed dataset containing video data for reward-free policy learning, which is relevant to our work. We have cited JPET and discussed it in the related work section (Please note that we are temporarily unable to update the paper in the system.).
 ___
->**Q2:The design of BCV-LR is very similar to FICC[2] (mainly in the offline part), while FICC is not properly referenced. FICC should be a comparable baseline in the discrete setting.**
+>**answer to Q2:**
 
 Thanks for your careful reading and we indeed missed this important related work[2]. We have However, due to the following reasons, we have not yet included FICC in the comparative experiments on ProcGen:
 
@@ -30,7 +30,8 @@ Thanks for your careful reading and we indeed missed this important related work
 4. The backbone of FICC, EZ, is based on MCTS, requiring a significant amount of training time. According to EZ[3], it requires 28 GPU hours for 100k steps training, while our BCV-LR only requires about 1 GPU hour. This high consumption makes many subsequent works [4,5] to avoid direct comparisons with EZ even in experiments on Atari. This also makes it impossible for us to obtain its results in a short period of time.
 
 If you have any questions, please let us know, thanks!
->**Q3:I am curious whether the effectiveness of direct behavior cloning in the online phase is related to the single-task setting or the quality of expert data. The offline phase of BCV-LR is quite similar to LAPO and FICC, while both LAPO and FICC avoid direct behavior cloning in the online phase and choose to use online rewards for policy adjustment in the multitask setting. It would be better if a direct online BC variant of LAPO were involved in the comparison, which means the online reward will also be excluded in this setting, and may further illustrate this aspect.**
+
+>**answer to Q3:**
 
 As we illustrated in answer to W2, LAPO also focuses on single-task setting. FICC indeed provides multi-task pre-training experiments while also conducts single-task experiments as their main results. In addition, the video dataset we use in Procgen is consistent with that of LAPO, which means the quality of expert data is the same for all video-based methods. As per your request, we have conducted extra experiments where we replaced the reinforcement learning loss of LAPO with the BC loss and compared it with our BCV-LR. The results in Table I demonstrate that LAPO-BC enables effective policy learning in some tasks while our BCV-LR still exhibits performance advantages. In addition, we also show that our BCV-LR can generalize to multi-task pre-training, which is detailed in answers to Q4.
 **Table I**
@@ -41,18 +42,18 @@ As we illustrated in answer to W2, LAPO also focuses on single-task setting. FIC
 | bossfight  | **10.3 ± 0.3**  | 0.0 ± 0.0  | 0.1 ± 0.1 || 11.6 |
 | chaser  | **3.1 ± 0.5**  | 0.6 ± 0.0  | 0.4 ± 0.2 || 10.0|
 
->**Q4:The paper lacks experiments in a multi-task setting or a discussion on the relationship between the expert video scale and the performance in the single-task setting. Can BCV-LR generalize to new tasks through multi-task data? Or, for new tasks lacking sufficient data, how much offline data is required for BCV-LR to fulfill behavior cloning? Otherwise, the prerequisite of obtaining sufficient data often implies having a well-performing in-domain policy on the task, reducing the significance of behavior cloning from expert videos.**
+>**answer to Q4**
 
 First, we conducted additional experiments in Procgen to test the multi-task pre-training ability of BCV-LR, which follows the settings of FICC mutli-task experiments. Concretely, we pre-trains one model on mixed videos of 'bigfish', 'maze', and 'starpilot', and then finetunned the pre-trained models in these seen tasks seperately. Different from FICC, we also employ two unseen tasks into evaluations. The results in Table II show that BCV-LR enables effective policy imitation on all tasks. It achieves robust multi-task pre-training, where the pre-trained knowledge can be shared across both seen and unseen domains.
 
 **Table II**
-|||BCV-LR-MT(share pre-training)|/|PPO|BCV-LR|
+|||BCV-LR-MT(share pre-training)|PPO|/|BCV-LR(single-task)|
 |-|-|-|-|-|-| 
-|seen|bigfish|32.2 ± 1.0||0.9 ± 0.1|35.9|
-||maze|9.6 ± 0.1||5.0 ± 0.7|9.9|
-||starpilot|44.3 ± 1.9||2.6 ± 0.9|54.8|
-|unseen|bossfight|5.5 ± 0.3||0.1 ± 0.1|10.3|
-||dodgeball|9.5 ± 0.3||1.1 ± 0.2|12.4|
+|seen|bigfish|**32.2 ± 1.0**|0.9 ± 0.1||35.9|
+||maze|**9.6 ± 0.1**|5.0 ± 0.7||9.9|
+||starpilot|**44.3 ± 1.9**|2.6 ± 0.9||54.8|
+|unseen|bossfight|**5.5 ± 0.3**|0.1 ± 0.1||10.3|
+||dodgeball|**9.5 ± 0.3**|1.1 ± 0.2||12.4|
 
 Then, we provide the video data efficiency experiments. We provide BCV-LR with 5k, 20k, 50k, and 100k (default in main experiments) expert video transitions. Results demonstrate that 20k transitions enables effective policy learning while 50k transitions can support near-expert policy performance. You can refer to Appendix C.5 for curves and more details.
 
@@ -61,6 +62,10 @@ Then, we provide the video data efficiency experiments. We provide BCV-LR with 5
 |-|-|-|-|-|-|-| 
 |reacher_hard|0 ± 0|384 ± 153|799 ± 34|**900 ± 31**||967|
 |finger_spin|596 ± 17|901 ± 33|905 ± 70|**942 ± 48**||981|
+
+>**answer to Q5**
+
+
 
 
 ___
