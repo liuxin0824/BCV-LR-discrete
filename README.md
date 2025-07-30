@@ -1,9 +1,21 @@
 # BCV-LR
+### R1
+
+We appreciate your careful reading and professional comments! In response to your feedback, we have supplemented the missing important works and further conducted several supplementary experiments, which greatly improves the quality of the paper. We hope these revisions will meet your expectations!
+
+___
+>**W1：I am not sure whether the offline stage is individually conducted on each task or jointly conducted on a multi-task dataset. The practical significance of video behavior cloning in a single-task setting is limited.**
+In the submitted version, all experiments are conducted under single-task settings. This is mainly due to two reasons: first, whether it is possible to balance video imitation performance and sampling efficiency in single-task settings remains an open problem; second, the recent advanced pure ILV (without reward) works mainly achieve evaluation under single-task settings. We agree with the reviewer that achieving video cloning under multi-task settings are more meaningful! As you suggested, we have supplemented multi-task experiments in a fashion akin to FICC, as shown in answer to Q3.
+___
+>**W2：The LAPO in the baseline is designed for the pre-training on multi-task data, which may affect comparisons.**
+
+___
+>**Q1
 
 
 ### R3
 ___
->**Q1：Stage 3. (as per the summary above), in which the latent action model is finetuned and the action decoder is trained, requires real actions to be observed via environment interaction. It is unclear what is the impact of the schedule of environment interactions, how exactly the phases are optimally alternated so as to sample iteratively from the policy learned online via the concurrent step 4. Does this matter?**
+>**Q1&Weakness2：Stage 3. (as per the summary above), in which the latent action model is finetuned and the action decoder is trained, requires real actions to be observed via environment interaction. It is unclear what is the impact of the schedule of environment interactions, how exactly the phases are optimally alternated so as to sample iteratively from the policy learned online via the concurrent step 4. Does this matter?**
 
 The BCV-LR online stage contains three parts. First, we a) allow the agent to interact with the environment for a fixed number of steps using its policy and enrich the experience buffer. Immediately after that, b) we perform finetuning of the latent action and training of the action decoder on the experience buffer. Then, c) using expert videos, we train the latent policy to imitate the finetuned latent action. After this, we will return to part a) and complete the cyclic online policy learning. This alternation is intuitive, that is, first collect new data of higher quality, then use the new data to fine-tune the latent action, and finally let the policy learn the fine-tuned latent action to achieve performance improvement. You can refer to Sec.A.1 (Appendix) for Pseudo Code.
 
@@ -14,7 +26,7 @@ In previous experiments, we did not adjust the number of steps for each interact
 | reacher_hard |  875 ± 65 |  **900 ± 31**  | 92 ± 98  | | 967 |
 | finger_spin  | **956 ± 20**  | 942 ± 48  | 374 ± 264 || 981|
 ___
->**Q2: How does the method compare to performing the steps in a fashion akin to LAPA? (No online learning, only imitation learning alignment on ground truth expert action?**
+>**Q2&Weakness4: How does the method compare to performing the steps in a fashion akin to LAPA? (No online learning, only imitation learning alignment on ground truth expert action?**
 
 To answer your questions, we further conduct additional experiments, where we let BCV-LR performs latent action finetuning and policy imitation with a few action-labeled expert transitions. Concretely, we maintain the original pre-training stage, while use 10k offline expert transitions to achieve offline imitation learning alignment. The results in Table (RL denotes DrQv2 for DMControl while PPO for procgen) demonstrate that BCV-LR can also well achieve offline imitation learning alignment. Of course, we would like to say that BCV-LR is designed for the ILV (imitation learning from videos), a much harder variant of the classical ILO (imitation learning from observation only) problem, where the employment of unsupervised online policy training adheres to the norms of this field.
 
@@ -24,7 +36,21 @@ To answer your questions, we further conduct additional experiments, where we le
 | reacher_hard |  **938 ± 44** |  900 ± 31  | 92 ± 98  | | 967 |
 | finger_spin  | **978 ± 7**  | 942 ± 48  | 374 ± 264 || 981|
 | fruitbot  | **27.7 ± 0.4**  | 27.5 ± 1.5  | -1.9 ± 1.0 || 29.9|
+___
 
+>**Weakness3: The method as requested does require a source of ground truth actions from the videos, it is thus not strictly suitable for solving pressing hard problems for real world robotics, e.g. learning from real human videos and then transferring the policies to robots. This is also related to the benchmarks being limited to classic "toy RL" simulation environments.**
+
+As the reviewer says,  our method has not yet been extended to more challenging real-world tasks, nor has it sufficiently explored knowledge transfer. We would like to provide some additional results, which may demonstrate the potential of our method in more task settings and application scenarios. First, we 
+
+In addition, we further conducted additional experiments in Metaworld manipulation benchmark. Only 50k environmental steps are allowed for each Metaworld task, with remaining settings similar to that of DMControl. Results are shown below. In this interaction-limited situation, BCV-LR can still derive effective manipulation skills from expert videos without accessing expert actions and rewards, which demonstrates its wider range of applications and potential for generalizing to real-world manipulation tasks.
+
+| Metaworld  | BCV-LR | BCO   | DrQv2| / |video|
+| - | - | - | - | - | - | 
+| Faucet-open| **0.82 ± 0.20**   | 0.13 ± 0.19  | 0.00 ± 0.00 |  | 1.00 |
+| Reach| **0.63 ± 0.25**   | 0.03 ± 0.05  | 0.13 ± 0.12 |  | 1.00 |
+| Drawer-open| **0.92 ± 0.12**   | 0.13 ± 0.09  | 0.00 ± 0.00  |  | 1.00 |
+| Faucet-close| **0.98 ± 0.04**   | 0 ± 0 | 0.50 ± 0.28 |  | 1.00 |
+| Mean SR| **0.84**   | 0.07  | 0.16 |   | 1.00 |
 
 
 ### R4
