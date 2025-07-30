@@ -43,14 +43,25 @@ As we illustrated in answer to W2, LAPO also focuses on single-task setting. FIC
 
 >**Q4:The paper lacks experiments in a multi-task setting or a discussion on the relationship between the expert video scale and the performance in the single-task setting. Can BCV-LR generalize to new tasks through multi-task data? Or, for new tasks lacking sufficient data, how much offline data is required for BCV-LR to fulfill behavior cloning? Otherwise, the prerequisite of obtaining sufficient data often implies having a well-performing in-domain policy on the task, reducing the significance of behavior cloning from expert videos.**
 
+First, we conducted additional experiments in Procgen to test the multi-task pre-training ability of BCV-LR, which follows the settings of FICC mutli-task experiments. Concretely, we pre-trains one model on mixed videos of 'bigfish', 'maze', and 'starpilot', and then finetunned the pre-trained models in these seen tasks seperately. Different from FICC, we also employ two unseen tasks into evaluations. The results in Table II show that BCV-LR enables effective policy imitation on all tasks. It achieves robust multi-task pre-training, where the pre-trained knowledge can be shared across both seen and unseen domains.
+
 **Table II**
-|||BCV-LR-MT|/|PPO|BCV-LR|
+|||BCV-LR-MT(share pre-training)|/|PPO|BCV-LR|
 |-|-|-|-|-|-| 
 |seen|bigfish|32.2 ± 1.0||0.9 ± 0.1|35.9|
 ||maze|9.6 ± 0.1||5.0 ± 0.7|9.9|
 ||starpilot|44.3 ± 1.9||2.6 ± 0.9|54.8|
 |unseen|bossfight|5.5 ± 0.3||0.1 ± 0.1|10.3|
 ||dodgeball|9.5 ± 0.3||1.1 ± 0.2|12.4|
+
+Then, we provide the video data efficiency experiments. We provide BCV-LR with 5k, 20k, 50k, and 100k expert video transitions. The results shown i
+
+**Table III**
+|Video data of BCV-LR|5k|20k|50k|100k|/|video|
+|-|-|-|-|-|-|-| 
+|reacher_hard|0 ± 0|384 ± 153|799 ± 34|**900 ± 31**||967|
+|finger_spin|596 ± 17|901 ± 33|905 ± 70|**942 ± 48**||981|
+
 
 ___
 [1]Learning Video-Conditioned Policy on Unlabelled Data with Joint Embedding Predictive Transformer. ICLR 25
