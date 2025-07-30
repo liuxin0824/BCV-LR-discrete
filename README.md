@@ -10,7 +10,7 @@ In the submitted version, all experiments are conducted under single-task settin
 ___
 >**W2:The LAPO in the baseline is designed for the pre-training on multi-task data, which may affect comparisons.**
 
-LAPO has indeed inspired many works on multi-task pre-training. However, according to the final published version of LAPO and its open-source code, it uses a 'full' distribution for each task in Procgen to ensure intra-task diversity (e.g., the 'maze' task includes mazes of different sizes, colors, and layouts) while does not perform cross-task 'multi-task learning' (i.e., it achieves pre-training on 'maze' videos and then performs online learning in the 'maze' task). The Procgen experiments of BCV-LR have strictly followed LAPO's setup in terms of environment configuration, thus ensuring a fair comparison. Please feel free to let us know if you have any further questions!
+LAPO has indeed inspired many works on multi-task pre-training. However, according to the final published version of LAPO and its open-source code, it uses a 'full' distribution for each task in Procgen to ensure intra-task diversity (e.g., the 'maze' task includes mazes of different sizes, colors, and layouts) while does not perform cross-task 'multi-task learning' (i.e., it achieves pre-training on 'maze' videos and then performs online learning in the 'maze' task). The Procgen experiments of BCV-LR have strictly followed LAPO's setup in terms of environment configuration and we use the same video dataset as that of LAPO, thus ensuring a fair comparison. Please feel free to let us know if you have any further questions!
 ___
 >**W3:Additionally, incorporating extra ablation studies and baselines could further solidify this work.**
 
@@ -31,7 +31,18 @@ Thanks for your careful reading and we indeed missed this important related work
 
 If you have any questions, please let us know, thanks!
 >**Q3:I am curious whether the effectiveness of direct behavior cloning in the online phase is related to the single-task setting or the quality of expert data. The offline phase of BCV-LR is quite similar to LAPO and FICC, while both LAPO and FICC avoid direct behavior cloning in the online phase and choose to use online rewards for policy adjustment in the multitask setting. It would be better if a direct online BC variant of LAPO were involved in the comparison, which means the online reward will also be excluded in this setting, and may further illustrate this aspect.**
-As the answer to
+As we illustrated in answer to W2, LAPO also focuses on single-task setting. FICC indeed provides multi-task pre-training experiments while also conducts single-task experiments as their main results. In addition, the video dataset we use in Procgen is consistent with that of LAPO, which means the quality of expert data is the same for all video-based methods. As per your request, we have conducted extra experiments where we replaced the reinforcement learning loss of LAPO with the BC loss and compared it with our BCV-LR. The results in Table I demonstrate that LAPO-BC enables effective policy learning in some tasks while our BCV-LR still exhibits performance advantages. In addition, we also show that our BCV-LR can generalize to multi-task pre-training, which is detailed in answers to Q4.
+>
+**Table I**
+| task  | BCV-LR |  LAPO-BC |  PPO | / |video|
+| - | - | - | - | - | - | 
+| fruitbot |  **27.5 ± 1.5** |  6.2 ± 1.9  | -1.9 ± 1.0  | | 29.9 |
+| heist  | **9.3 ± 0.1**  | 9.2 ± 0.3  | 3.7 ± 0.2 || 9.7 |
+| bossfight  | **10.3 ± 0.3**  | 0.0 ± 0.0  | 0.1 ± 0.1 || 11.6 |
+| chaser  | **3.1 ± 0.5**  | 0.6 ± 0.0  | 0.4 ± 0.2 || 10.0|
+
+
+The moltivation
 
 ___
 [1]Learning Video-Conditioned Policy on Unlabelled Data with Joint Embedding Predictive Transformer. ICLR 25
