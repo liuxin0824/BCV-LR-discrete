@@ -67,18 +67,20 @@ Then, we provide the video data efficiency experimental results. We provide BCV-
 As per your suggestions, we first conducted additional experiments, where we finetune the self-supervised encoder with $L_{la}$ and $L_{ft}$ repectively. The results in Table IV demonstrate that whether finetuning self-supervised visual representation doesn't yield apprent effct on policy performance. A similar phenomenon has been observed in self-supervised RL, leading some works to fine-tune self-supervised representations while others opt to freeze them.
 
 **Table IV**
-||Finetuning with $L_{la}$|Finetuning with $L_{ft}$|No visual finetuning|/|video|
-|-|-|-|-|-|-| 
-|reacher_hard|876 ± 15|**906 ± 65**|900 ± 31||967|
-|finger_spin|937 ± 26|920 ± 57|**942 ± 48**||981|
+||Finetuning with $L_{la}$|Finetuning with $L_{ft}$|No visual finetuning|
+|-|-|-|-|
+|reacher_hard|876 ± 15|**906 ± 65**|900 ± 31|
+|finger_spin|937 ± 26|920 ± 57|**942 ± 48**|
 
-Then, we provide the experiments to show the impact on performance of not updating the latent action predictor in the online phase. Partial results are presented in Table V, demonstrating that utilizing the environmental actions to finetune pre-trained latent actions is a crucial step in BCV-LR, especially in DMControl tasks. This is because, compared to discrete video game benchmarks, DMControl features continuous action spaces and strong partial observability. These characteristics make unsupervised latent action extraction more challenging, thereby leading to relatively higher gains during the online fine-tuning phase. Please refer to Sec. 4.4 for more results, where we also experimentally demonstrate the necessity of pre-trained latent actions for DMControl.
+Then, we provide the experiments to show the impact on performance of not updating the latent action predictor with $L_{ft}$ in the online phase. Partial results are presented in Table V, demonstrating that utilizing the environmental actions to finetune pre-trained latent actions is a crucial step in BCV-LR, especially in DMControl tasks. This is because, compared to discrete video game benchmarks, DMControl features continuous action spaces and strong partial observability. These characteristics make unsupervised latent action extraction more challenging, thereby leading to relatively higher gains during the online latent action fine-tuning. Please refer to Sec.4.4 for more ablation results, where we also experimentally demonstrate the necessity of pre-training latent actions for continuous control.
 
 **Table V**
-||Finetuning with $L_{la}$|Finetuning with $L_{ft}$|No visual finetuning|/|video|
-|-|-|-|-|-|-| 
-|reacher_hard|876 ± 15|**906 ± 65**|900 ± 31||967|
-|finger_spin|937 ± 26|920 ± 57|**942 ± 48**||981|
+|||BCV-LR|BCV-LR w/o $L_{ft}$|
+|-|-|-|-|
+|DMControl|point_mass_easy|**123 ± 39**|**906 ± 65**|
+||jaco_reach_bottom_left|937 ± 26|920 ± 57|
+|Procgen|starpilot|876 ± 15|**906 ± 65**|
+||reacher_hard|937 ± 26|920 ± 57|
 
 
 
@@ -114,11 +116,11 @@ ___
 To answer your questions, we further conduct additional experiments, where we let BCV-LR performs latent action finetuning and policy imitation with a few action-labeled expert transitions. Concretely, we maintain the original pre-training stage, while use 10k offline expert transitions to achieve offline imitation learning alignment. The results in Table (RL denotes DrQv2 for DMControl while PPO for procgen) demonstrate that BCV-LR can also well achieve offline imitation learning alignment. Of course, we would like to say that BCV-LR is designed for the ILV (imitation learning from videos), a much harder variant of the classical ILO (imitation learning from observation only) problem, where the employment of unsupervised online policy training adheres to the norms of this field.
 
 **Table II**
-| task  | BCV-LR-offline |  BCV-LR |  RL | / |video|
-| - | - | - | - | - | - | 
-| reacher_hard |  **938 ± 44** |  900 ± 31  | 92 ± 98  | | 967 |
-| finger_spin  | **978 ± 7**  | 942 ± 48  | 374 ± 264 || 981|
-| fruitbot  | **27.7 ± 0.4**  | 27.5 ± 1.5  | -1.9 ± 1.0 || 29.9|
+|| task  | BCV-LR-offline |  BCV-LR |  RL | / |video|
+|-| - | - | - | - | - | - | 
+|DMControl| reacher_hard |  **938 ± 44** |  900 ± 31  | 92 ± 98  | | 967 |
+|| finger_spin  | **978 ± 7**  | 942 ± 48  | 374 ± 264 || 981|
+|Procgen| fruitbot  | **27.7 ± 0.4**  | 27.5 ± 1.5  | -1.9 ± 1.0 || 29.9|
 ___
 
 >**Weakness3: The method as requested does require a source of ground truth actions from the videos, it is thus not strictly suitable for solving pressing hard problems for real world robotics, e.g. learning from real human videos and then transferring the policies to robots. This is also related to the benchmarks being limited to classic "toy RL" simulation environments.**
