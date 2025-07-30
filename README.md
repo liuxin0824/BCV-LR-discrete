@@ -18,23 +18,28 @@ According to your constructive reviews, we have further supplemented several add
 ___
 >**Q1:Does the phrase "without the need to access any other supervision" include the supervision of actions during the online phase? The supervision on the actions directly injects the environment's inverse dynamics knowledge and potentially adjusts the distribution of latent actions through alignment with ground-truth actions. If the phrase refers to merely using the latent reward information implicit in expert videos without online expert rewards for video behavior cloning, JEPT[1] may be an uncited but related work. Similarly, without using an explicit reward signal, JEPT can achieve generalization of one-shot visual imitation in some tasks with a mixture dataset.**
 
-Thank you for your careful reading! BCV-LR does utilize information from environmental actions and our original intention was to emphasize that it does not rely on 'expert' action labels. We have replaced "without the need to access any other supervision" with "without the need to access any other expert supervision" to eliminate any ambiguity. Additionally, JPET utilizes a mixed dataset containing video data for reward-free policy learning, which is relevant to our work. We have cited JPET and discussed it in the related work section (Please note that we are temporarily unable to update the paper in the system.).
+Thank you for your careful reading! BCV-LR does utilize information from environmental actions and our original intention was to emphasize that it does not rely on 'expert' action labels. We have replaced "without the need to access any other supervision" with "without the need to access any other expert supervision" to eliminate any ambiguity. Additionally, JPET[1] utilizes a mixed dataset containing video data for reward-free policy learning, which is relevant to our work. We have cited JPET and discussed it in the related work section (Please note that we are temporarily unable to update the paper in the system.).
 ___
 >**Q2:The design of BCV-LR is very similar to FICC[2] (mainly in the offline part), while FICC is not properly referenced. FICC should be a comparable baseline in the discrete setting.**
 
-Thanks for your careful reading and we indeed missed this important related work. We have However, due to the following reasons, we have not yet included FICC in the comparative experiments on ProcGen:
+Thanks for your careful reading and we indeed missed this important related work[2]. We have However, due to the following reasons, we have not yet included FICC in the comparative experiments on ProcGen:
 
 1. FICC only provides code for the pre-training part. It does not offer code for fine-tuning the pre-trained model through interaction in the environment and combining it with MCTS-based RL, making it difficult for us to reproduce this work in a short period of time.
-2. FICC has not been tested on the ProcGen benchmark. Moreover, whether its MCTS-based backbone is applicable to procedurally generated environments remains an open question, which leaves us without reference information such as hyperparameter settings and thus unable to ensure the reasonability of reproductions.
+2. FICC has not been tested on the ProcGen benchmark. Moreover, whether its MCTS-based backbone EfficientZero (EZ)[3] is applicable to procedurally generated environments remains an open question, which leaves us without reference information such as hyperparameter settings and thus unable to ensure the reasonability of reproductions.
 3. We have already compared BCV-LR against 6 advanced and popular baselines, including the state-of-the-art RL algorithms on ProcGen. Additionally, none of our baselines have been directly compared with the FICC algorithm. Therefore, we believe the current comparisons on Procgen are sufficient, which is also recognized by reviewer HHys.
-4. The backbone of FICC, Efficientzero, is based on MCTS, requiring a significant amount of training time. The substantial resource consumption resource consumption has led many subsequent papers to avoid direct comparisons with EfficientZero even in experiments on Atari. This also makes it impossible for us to obtain its results in a short period of time.
+4. The backbone of FICC, EZ, is based on MCTS, requiring a significant amount of training time. According to EZ[3], it requires 28 GPU hours for 100k steps training, while our BCV-LR only requires about 1 GPU hour. This high consumption makes many subsequent works [4,5] to avoid direct comparisons with EZ even in experiments on Atari. This also makes it impossible for us to obtain its results in a short period of time.
 
 If you have any questions, please let us know, thanks!
+>**Q3:I am curious whether the effectiveness of direct behavior cloning in the online phase is related to the single-task setting or the quality of expert data. The offline phase of BCV-LR is quite similar to LAPO and FICC, while both LAPO and FICC avoid direct behavior cloning in the online phase and choose to use online rewards for policy adjustment in the multitask setting. It would be better if a direct online BC variant of LAPO were involved in the comparison, which means the online reward will also be excluded in this setting, and may further illustrate this aspect.**
+As the answer to
 
-
-
-[3]Value-Consistent Representation Learning for Data-Efficient Reinforcement Learning. AAAI 2023
-[4]
+___
+[1]Learning Video-Conditioned Policy on Unlabelled Data with Joint Embedding Predictive Transformer. ICLR 25
+[2]Become a Proficient Player with Limited Data through Watching Pure Videos. ICLR 23
+[3]Mastering Atari Games with Limited Data. Neurips 21
+[4]Value-Consistent Representation Learning for Data-Efficient Reinforcement Learning. AAAI 23
+[5]Mask-based Latent Reconstruction for Reinforcement Learning. Neurips 22
+[6]Learning to act without actions. ICLR 24
 
 
 
