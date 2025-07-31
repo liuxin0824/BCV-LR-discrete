@@ -60,7 +60,7 @@ Then, we provide the video data efficiency experiments. We test BCV-LR with 5k, 
 ___
 >**answer to Q5: We conduct extra ablation experiments.**
 
-As per your suggestions, we first conducted additional experiments, where we finetune the self-supervised encoder with $L_{la}$ and $L_{ft}$ repectively. The results in Table IV demonstrate that whether finetuning self-supervised visual representation doesn't yield apprent effct on policy performance (curves are also similar). This phenomenon has also been observed in self-supervised RL[7], leading some works to fine-tune self-supervised features while others opt to freeze them.
+As per your suggestions, we first conducted additional experiments, where we finetuned the self-supervised encoder with $L_{la}$ and $L_{ft}$ respectively. The results in Table IV demonstrate that whether finetuning self-supervised visual representation doesn't yield apprent effct on policy performance (curves are also similar). This phenomenon has also been observed in self-supervised RL[7], leading some works to fine-tune self-supervised features while others opt to freeze them.
 |Task|Finetuning via $L_{la}$|Finetuning via $L_{ft}$|No visual finetuning|
 |-|-|-|-|
 |reacher_hard|876 ± 15|**906 ± 65**|900 ± 31|
@@ -74,7 +74,7 @@ Then, we provide the experiments to show the impact on performance of not updati
 |Procgen|starpilot|**54.8 ± 1.4**|29.2 ± 10.6|
 ||fruitbot|**27.5 ± 1.5**|24.2 ± 2.0|
 ___
-In addition, we further conducted additional experiments in Metaworld. Only 50k steps are allowed for each task, with remaining settings similar to that of DMControl. Results demonstrates BCV-LR's wider range of applications and potential for generalizing to real-world manipulation tasks.
+In addition, we further conducted additional experiments in Metaworld. Only 50k steps are allowed for each task, with remaining settings similar to that of DMControl. Results demonstrate BCV-LR's wider range of applications and potential for generalizing to real-world manipulation tasks.
 |Metaworld-50k|BCV-LR|BCO|DrQv2|/|video|
 |-|-|-|-|-|-| 
 |Faucet-open|**0.82 ± 0.20**|0.13 ± 0.19|0.00 ± 0.00||1|
@@ -83,14 +83,20 @@ In addition, we further conducted additional experiments in Metaworld. Only 50k 
 |Faucet-close|**0.98 ± 0.04**|0.00 ± 0.00|0.50 ± 0.28||1|
 |Mean SR|**0.84**|0.07|0.16||1|
 ___
-We hope these revisions will meet your expectations, and we would be most grateful if you could consider raising your score.
+We hope these revisions can meet your expectations, and we would be most grateful if you consider raising your score. Thanks!
 
 [1]Learning Video-Conditioned Policy on Unlabelled Data with Joint Embedding Predictive Transformer.ICLR25
+
 [2]Become a Proficient Player with Limited Data through Watching Pure Videos.ICLR23
+
 [3]Mastering Atari Games with Limited Data.Neurips21
+
 [4]Value-Consistent Representation Learning for Data-Efficient Reinforcement Learning.AAAI23
+
 [5]Mask-based Latent Reconstruction for Reinforcement Learning.Neurips22
+
 [6]Learning to act without actions.ICLR24
+
 [7]Decoupling representation learning from reinforcement learning.ICML21
 
 
