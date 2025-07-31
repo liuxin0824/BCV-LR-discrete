@@ -121,11 +121,11 @@ We greatly appreciate the reviewer’s careful reading, detailed feedback, and r
 ___
 >**W:The scope of the experiments are relatively limited. All experiments are conducted in simulation/"toy" environments (Procgen and DMControl). While these are standard benchmarks, it is unclear how well BCV-LR generalizes to internet-scale human videos and real-world robotics applications.**
 
-We understand your concern! Since it is highly challenging to balance video imitation performance and efficiency without access to expert actions or expert rewards, our experiments have primarily been conducted in relatively standard visual RL environments to answer this open question, and we have not extended our work to real-world tasks or considered internet-scale pre-training, which are of greater significance. Based on your feedback, we further conduct some extra experiments in Metaworld manipulation benchmark, which may demonstrate a wider application of BCV-LR.
+We understand your concern! Since it is highly challenging to balance video imitation performance and efficiency without access to expert actions or expert rewards, our experiments have primarily been conducted in relatively standard visual RL environments to answer the open question "is sample efficient ILV available" and have not been extended to real-world tasks or internet-scale pre-training, which are of greater significance. Based on your feedback, we further conduct some extra experiments in Metaworld manipulation benchmark, which may demonstrate a wider application of BCV-LR.
 
-For each Metaworld task, only 50k environmental steps are allowed, with remaining settings similar to that of DMControl. Results are shown in Table III. In this interaction-limited situation, BCV-LR can still derive effective manipulation skills from expert videos without accessing expert actions and rewards, which demonstrates its wider range of applications and potential for generalizing to real-world manipulation tasks. 
+For each Metaworld task, only 50k environmental steps are allowed, with remaining settings similar to that of DMControl. Results are shown in Table I. In this interaction-limited situation, BCV-LR can still derive effective manipulation skills from expert videos without accessing expert actions and rewards, which demonstrates its wider range of applications and potential for generalizing to real-world manipulation tasks. 
 
-先阐述扩展大规模视频里面面临的挑战是啥，大概可能得解决思路啥，后再加一句，future work里面讨论
+
 
 **Table I**
 |Metaworld-50k|BCV-LR|BCO|DrQv2|/|video|
@@ -135,6 +135,9 @@ For each Metaworld task, only 50k environmental steps are allowed, with remainin
 |Drawer-open|**0.92 ± 0.12**|0.13 ± 0.09|0.00 ± 0.00||1|
 |Faucet-close|**0.98 ± 0.04**|0.00 ± 0.00|0.50 ± 0.28 ||1|
 |Mean SR|**0.84**|0.07|0.16||1|
+
+For internet-scale cross-domain video data, the main challenge BCV-LR may face stems from the difficulty of transferring visual knowledge. Considering that BCV-LR is designed to be easily compatible with any action-free self-supervised tasks, this issue could potentially be alleviated by involving more advanced self-supervised objectives or using off-the-shelf pre-trained encoders. Additionally, with the advancement of large video generation models, the acquisition of expert video data will become easier. This is particularly beneficial for methods like BCV-LR, which only require expert videos as supervision, and may even lead to new, more efficient training paradigms. We have added the above discussion in the future work section to inspire more thinking.
+
 ___
 >**Q1:For continuous control tasks, they are relatively easy with low-dimensional action spaces. I'm curious how would the proposed methods work for environments with high-dimensional action spaces. (For example, take humanoid & dog from Deepmind Control Suite)**
 
@@ -148,26 +151,36 @@ Following your suggestion, we attempt experiments on the 'dog' and 'humanoid' do
 ___
 >**Q2:The author mention that during self-supervised representation learning phase, it also learns some temporal dynamics by aligning representation of $o_t$ with $o_{t+1}$, but this seems not appearing in Equation 1. So what's the overall objective for this stage. Is it Equation 1 (contrastive loss with image reconstruction ) plus temporal loss?**
 
-As shown in Sec.3.1.1 (line 174, main paper), BCV-LR is designed to be easily compatible with any action-free self-supervised tasks (it completely decouples visual learning from subsequent training), and it can adapt to different types of tasks by choosing appropriate self-supervised objectives. To this end, we apply different latent feature training losses for Procgen and DMControl. Concretely, we employ the 'contrastive loss with image reconstruction' (Eq.1, line 185, main paper) for Procgen video games, because it has been proven effective in these kinds of tasks [1,2]. For DMControl environments where the temporal understanding is crucial, we choose another prototype-based temporal association loss (Eq.10, line 549, Appendix) because invoving temporal information into self-supervised objectives have been proven necessary in DMControl [3]. In summary, BCV-LR can involve more advanced self-supervised objectives for more challenging tasks if necessary, which makes its potential not limited to specific environments.
+As shown in Sec.3.1.1 (line 174, main paper), BCV-LR is designed to be easily compatible with any action-free self-supervised tasks (it completely decouples visual learning from subsequent training), and it can adapt to different types of tasks by choosing appropriate self-supervised objectives. To this end, we apply different latent feature training losses for Procgen and DMControl. Concretely, we employ the 'contrastive loss with image reconstruction' (Eq.1, line 185, main paper) for Procgen video games, because it has been proven effective in these kinds of tasks [1,2]. For DMControl environments where the temporal understanding is crucial, we choose another prototype-based temporal association loss (Eq.10, line 549, Appendix) because involving temporal information into self-supervised objectives have been proven necessary in DMControl [3]. In summary, BCV-LR can involve more advanced self-supervised objectives for more challenging tasks if necessary, which makes its potential not limited to specific environments.
 
-需要讲在正文什么地方修改
+We have further added the above details in Section 3.1.1 to enhance clarity for readers.
+
 ___
 >**Q3:The reconstruction loss of feature learning seems suboptimal especially for environments with distracting backgrounds. The authors mention that they get better performance with this loss added. But is it because the visual observations of the environments it tests on are too simple?**
 
-We agree with your opinion on reconstruction loss and some previous works [6] have demonstrated the limitation of reconstruction when faced with visual distraction. As we explain in our answer to Q2, BCV-LR employs the reconstruction loss in Procgen because of its effectiveness in video games [1], but it is not limited to this reconstruction loss. BCV-LR is designed to be easily compatible with any action-free self-supervised tasks (it completely decouples visual learning from subsequent training), and it can adapt to different types of tasks by choosing appropriate self-supervised objectives. To this end, BCV-LR can involve more advanced self-supervised objectives (e.g., ViT-based masked reconstruction [4,5] or distraction-robust prototypical representation [6]) for more challenging tasks if necessary. In addition, BCV-LR can also be combined with an off-the-shelf, well-trained encoder, which makes its potential not limited to both tasks and experimental settings. 
+We agree with your opinion on reconstruction loss, and some previous works [6] have demonstrated the limitation of reconstruction when faced with visual distraction. As we explain in our answer to Q2, BCV-LR employs the reconstruction loss in Procgen because of its effectiveness in video games [1], but it is not limited to this reconstruction loss. BCV-LR is designed to be easily compatible with any action-free self-supervised tasks (it completely decouples visual learning from subsequent training), and it can adapt to different types of tasks by choosing appropriate self-supervised objectives. To this end, BCV-LR can involve more advanced self-supervised objectives (e.g., ViT-based masked reconstruction [4,5] or distraction-robust prototypical representation [6]) for more challenging tasks if necessary. In addition, BCV-LR can also be combined with an off-the-shelf, well-trained encoder, which makes its potential not limited to both tasks and experimental settings. 
 
 ___
 >**Q4:A very relevant work [1] is missing.**
-We appreciate your careful reading, and now have supplemented the discussion of FICC [1] in the related work. Thank you!
 
-需要写具体怎么改，在正文哪个地方
+We appreciate your careful reading, and now have supplemented the discussion of FICC [1] in the related work (line 121): "FICC[47] pre-trains world models on action-free agent experience, accelerating MBRL on Atari." Thank you!
+
+
 
 ___
+
+We hope these answers can meet your expectations, and we would be most grateful if you maintain your recommendation or raise your score. Thanks!
+
 [1]Become a Proficient Player with Limited Data through Watching Pure Videos. ICLR 2023
+
 [2]Curl: Contrastive unsupervised representations for reinforcement learning. ICML 2020
+
 [3]Reinforcement learning with prototypical representations. ICML 2021
+
 [4]Masked world models for visual control. CoRL 2023
+
 [5]Mask-based Latent Reconstruction for Reinforcement Learning. Neurips 2022
+
 [6]Dreamerpro: Reconstruction-free model-based reinforcement learning with prototypical representations. ICML 2022
 
 
