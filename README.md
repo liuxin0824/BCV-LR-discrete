@@ -83,7 +83,7 @@ Then, we provide the experiments to show the impact on performance of not updati
 ___
 In addition, we further conducted additional experiments in Metaworld. Only 50k steps are allowed for each task, with remaining settings similar to that of DMControl. Results demonstrates BCV-LR's wider range of applications and potential for generalizing to real-world manipulation tasks.
 
-|Metaworld|BCV-LR|BCO|DrQv2|/|video|
+|Metaworld-50k|BCV-LR|BCO|DrQv2|/|video|
 |-|-|-|-|-|-| 
 |Faucet-open|**0.82 ± 0.20**|0.13 ± 0.19|0.00 ± 0.00||1|
 |Reach|**0.63 ± 0.25**|0.03 ± 0.05|0.13 ± 0.12||1|
@@ -141,13 +141,13 @@ We agree with your comment! Since it is highly challenging to balance video imit
 For each Metaworld task, only 50k environmental steps are allowed, with remaining settings similar to that of DMControl. Results are shown in Table III. In this interaction-limited situation, BCV-LR can still derive effective manipulation skills from expert videos without accessing expert actions and rewards, which demonstrates its wider range of applications and potential for generalizing to real-world manipulation tasks. Furthermore, we would like to add a discussion on real-world tasks and cross-domain knowledge transferring in the 'Limitation and Future Work' sections to make our paper more comprehensive.
 
 **Table III**
-| Metaworld  | BCV-LR | BCO   | DrQv2| / |video|
-| - | - | - | - | - | - | 
-| Faucet-open| **0.82 ± 0.20**   | 0.13 ± 0.19  | 0.00 ± 0.00 |  | 1.00 |
-| Reach| **0.63 ± 0.25**   | 0.03 ± 0.05  | 0.13 ± 0.12 |  | 1.00 |
-| Drawer-open| **0.92 ± 0.12**   | 0.13 ± 0.09  | 0.00 ± 0.00  |  | 1.00 |
-| Faucet-close| **0.98 ± 0.04**   | 0.00 ± 0.00 | 0.50 ± 0.28 |  | 1.00 |
-| Mean SR| **0.84**   | 0.07  | 0.16 |   | 1.00 |
+|Metaworld-50k|BCV-LR|BCO|DrQv2|/|video|
+|-|-|-|-|-|-| 
+|Faucet-open|**0.82 ± 0.20**|0.13 ± 0.19|0.00 ± 0.00||1|
+|Reach|**0.63 ± 0.25**|0.03 ± 0.05|0.13 ± 0.12||1|
+|Drawer-open|**0.92 ± 0.12**|0.13 ± 0.09|0.00 ± 0.00||1|
+|Faucet-close|**0.98 ± 0.04**|0.00 ± 0.00|0.50 ± 0.28 ||1|
+|Mean SR|**0.84**|0.07|0.16||1|
 
 
 
@@ -167,21 +167,23 @@ ___
 
 In addition to the video games, we also demonstrate the advantages of BCV-LR on DMControl benchmark which consists of several continuous robotic control tasks. We summarize the average results below. More details are provided in Sec.4.3 (main paper) and Sec.C.1 (Appendix).
 
-| DMControl-8-tasks  | BCV-LR  | LAIFO   | BCO  |UPESV |TACO  | DrQv2| / |video|
+**Table I**
+| DMControl-8-tasks-100k  | BCV-LR  | LAIFO   | BCO  |UPESV |TACO  | DrQv2| / |video|
 | - | - | - | - | - | - |  - | - | - |
 | Mean Score | **604**   | 158  | 336  | 18     | 310  | 232 | | 698|
 | Video-norm Mean Score  | **0.78**   | 0.20  | 0.31  | 0.03     | 0.45  | 0.34 | | 1.00|
 
 
-In addition, we further conduct additional experiments in the Metaworld manipulation benchmark. Only 50k environmental steps are allowed for each Metaworld task, with remaining settings similar to that of DMControl. Results are shown below. In this interaction-limited situation, BCV-LR can still derive effective manipulation skills from expert videos without accessing expert actions and rewards, which demonstrates its wider range of applications and potential for generalizing to real-world manipulation tasks. Furthermore, we would like to add a discussion about real-world tasks in the 'Limitation and Future Work' sections to make our paper more comprehensive.
+In addition, we further conduct additional experiments in the Metaworld manipulation benchmark. Only 50k environmental steps are allowed for each Metaworld task, with remaining settings similar to that of DMControl. Results are shown in Table II. In this interaction-limited situation, BCV-LR can still derive effective manipulation skills from expert videos without accessing expert actions and rewards, which demonstrates its wider range of applications and potential for generalizing to real-world manipulation tasks. Furthermore, we would like to add a discussion about real-world tasks in the 'Limitation and Future Work' sections to make our paper more comprehensive.
 
-| Metaworld  | BCV-LR | BCO   | DrQv2| / |video|
-| - | - | - | - | - | - | 
-| Faucet-open| **0.82 ± 0.20**   | 0.13 ± 0.19  | 0.00 ± 0.00 |  | 1.00 |
-| Reach| **0.63 ± 0.25**   | 0.03 ± 0.05  | 0.13 ± 0.12 |  | 1.00 |
-| Drawer-open| **0.92 ± 0.12**   | 0.13 ± 0.09  | 0.00 ± 0.00  |  | 1.00 |
-| Faucet-close| **0.98 ± 0.04**   | 0.00 ± 0.00 | 0.50 ± 0.28 |  | 1.00 |
-| Mean SR| **0.84**   | 0.07  | 0.16 |   | 1.00 |
+**Table II**
+|Metaworld-50k|BCV-LR|BCO|DrQv2|/|video|
+|-|-|-|-|-|-| 
+|Faucet-open|**0.82 ± 0.20**|0.13 ± 0.19|0.00 ± 0.00||1|
+|Reach|**0.63 ± 0.25**|0.03 ± 0.05|0.13 ± 0.12||1|
+|Drawer-open|**0.92 ± 0.12**|0.13 ± 0.09|0.00 ± 0.00||1|
+|Faucet-close|**0.98 ± 0.04**|0.00 ± 0.00|0.50 ± 0.28 ||1|
+|Mean SR|**0.84**|0.07|0.16||1|
 
 ___
 [1]Become a Proficient Player with Limited Data through Watching Pure Videos. ICLR 2023
