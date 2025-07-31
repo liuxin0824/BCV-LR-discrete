@@ -16,37 +16,40 @@ ___
 
 According to your constructive reviews, we have further supplemented several additional experiments and improve our work!
 ___
->**answer to Q1:**
+Due to space constraints, we can't list your concrete questions here. Please refer to your review section. We apologize for the inconvenience!
+>**answer to Q1: We supplement the reference and discussion of JPET.**
 
-Thank you for your careful reading! BCV-LR does utilize information from environmental actions and our original intention was to emphasize that it does not rely on 'expert' action labels. We have replaced "without the need to access any other supervision" with "without the need to access any other expert supervision" to eliminate any ambiguity. Additionally, JPET[1] utilizes a mixed dataset containing video data for reward-free policy learning, which is relevant to our work. We have cited JPET and discussed it in the related work section (Please note that we are temporarily unable to update the paper in the system.).
+Thank you for your careful reading! BCV-LR does utilize information from environmental actions and our original intention was to emphasize that it does not rely on 'expert' action labels. We have replaced "without the need to access any other supervision" with "without the need to access any other expert supervision" to eliminate any ambiguity. Additionally, JPET[1] utilizes a mixed dataset containing video data for reward-free policy learning, which is very relevant to our work and we missed it. We now add the citation and discussion of JPET in the related work (Please note that we are temporarily unable to update the paper now).
 ___
->**answer to Q2:**
+>**answer to Q2: We add the reference and discussion of FICC and explain why it has not been included in the comparison for the time being.**
 
-Thanks for your careful reading and we indeed missed this important related work[2]. We have However, due to the following reasons, we have not yet included FICC in the comparative experiments on ProcGen:
+Thanks for your careful reading, and we indeed missed this important related work [2]. That said, due to the following reasons, we have not yet included FICC in the experiments on ProcGen:
 
-1. FICC only provides code for the pre-training part. It does not offer code for fine-tuning the pre-trained model through interaction in the environment and combining it with MCTS-based RL, making it difficult for us to reproduce this work in a short period of time.
-2. FICC has not been tested on the ProcGen benchmark. Moreover, whether its MCTS-based backbone EfficientZero (EZ)[3] is applicable to procedurally generated environments remains an open question, which leaves us without reference information such as hyperparameter settings and thus unable to ensure the reasonability of reproductions.
-3. We have already compared BCV-LR against 6 advanced and popular baselines, including the state-of-the-art RL algorithms on ProcGen. Additionally, none of our baselines have been directly compared with the FICC algorithm. Therefore, we believe the current comparisons on Procgen are sufficient, which is also recognized by reviewer HHys.
-4. The backbone of FICC, EZ, is based on MCTS, requiring a significant amount of training time. According to EZ[3], it requires 28 GPU hours for 100k steps training, while our BCV-LR only requires about 1 GPU hour. This high consumption makes many subsequent works [4,5] to avoid direct comparisons with EZ even in experiments on Atari. This also makes it impossible for us to obtain its results in a short period of time.
+1. FICC provides code for its pre-training part while doesn't offer code for fine-tuning the pre-trained model and combining it with its MCTS-based backbone online. This makes it difficult for us to reproduce this work within the short timeframe of the rebuttal period.
+2. FICC has not been evaluated on the Procgen. Moreover, whether its MCTS-based backbone EfficientZero (EZ)[3] is applicable to procedurally generated environments remains an open question. This lack of information—such as hyperparameter settings and EZ framework in Procgen—leaves us unable to ensure the validity of our reproductions.
+3. We have already compared BCV-LR against 6 advanced and popular baselines on Procgen, including the state-of-the-art RL and ILV algorithms. Additionally, to our knowledge, none of these methods have been directly compared with the FICC. Thus, we feel that the current set of comparisons on Procgen is adequate, a view that also aligns with the feedback from Reviewer HHys and TLPv.
+4. The backbone of FICC, EZ, is built on MCTS and thus requires considerable training time. As noted in EZ [3], it take 28 GPU hours for 100k steps in discrete control, whereas BCV-LR online stage requires only around 1 GPU hour on both discrete and continuous domains. This relatively high computational cost has led many subsequent works [4,5] to refrain from direct comparisons with EZ, even in Atari experiments. In addition, this consumption also means it's hard to obtain its results within the limited timeframe available.
 
-If you have any questions, please let us know, thanks!
+If you have any questions, please feel free to let us know!
+___
+>**answer to Q3: We explain that the single-task setting doesn't cause unfairness and all baselines use the same training data. We conduct additional experiments on LAPO's BC variant.**
 
->**answer to Q3:**
+As we explained in our answer to W2, LAPO also focuses on single-task settings. FICC does include multi-task pre-training experiments, but its main results are from single-task experiments.​
+What’s more, the Procgen video we use is the same as LAPO’s original data, as stated in Sec.4.2 (line286 mainpaper). This means all video-based methods have expert data of the same quality.​
+As you asked, we conduct extra experiments: we replaced LAPO’s online RL loss with BC loss, then compared it with our BCV-LR. The results below show that LAPO-BC works well for policy learning in some tasks, but our BCV-LR still performs better.​
+We also show that BCV-LR can be used for multi-task pre-training in a fashion akin to FICC. Please refer to answer to Q4.
 
-As we illustrated in answer to W2, LAPO also focuses on single-task setting. FICC indeed provides multi-task pre-training experiments while also conducts single-task experiments as their main results. In addition, the video dataset we use in Procgen is consistent with that of LAPO, which means the quality of expert data is the same for all video-based methods. As per your request, we have conducted extra experiments where we replaced the reinforcement learning loss of LAPO with the BC loss and compared it with our BCV-LR. The results in Table I demonstrate that LAPO-BC enables effective policy learning in some tasks while our BCV-LR still exhibits performance advantages. In addition, we also show that our BCV-LR can generalize to multi-task pre-training, which is detailed in answers to Q4.
-**Table I**
-| Task  | BCV-LR |  LAPO-BC |  PPO | / |video|
-| - | - | - | - | - | - | 
-| fruitbot |  **27.5 ± 1.5** |  6.2 ± 1.9  | -1.9 ± 1.0  | | 29.9 |
-| heist  | **9.3 ± 0.1**  | 9.2 ± 0.3  | 3.7 ± 0.2 || 9.7 |
-| bossfight  | **10.3 ± 0.3**  | 0.0 ± 0.0  | 0.1 ± 0.1 || 11.6 |
-| chaser  | **3.1 ± 0.5**  | 0.6 ± 0.0  | 0.4 ± 0.2 || 10.0|
+|Task|BCV-LR|LAPO-BC|PPO|/|video|
+|-|-|-|-|-|-| 
+|fruitbot|**27.5 ± 1.5**|6.2 ± 1.9|-1.9 ± 1.0||29.9|
+|heist|**9.3 ± 0.1**|9.2 ± 0.3|3.7 ± 0.2||9.7|
+|bossfight|**10.3 ± 0.3**|0.0 ± 0.0|0.1 ± 0.1||11.6|
+|chaser|**3.1 ± 0.5**|0.6 ± 0.0|0.4 ± 0.2||10.0|
+___
+>**answer to Q4: We conduct extra experiments to demonstrate the multi-task ability of BCV-LR and provide video data efficiency analysis.**
 
->**answer to Q4**
+According to your suggestions, we conducted additional multi-task experiments for BCV-LR in Procgen, which follows the settings of FICC mutli-task pre-training experiments. Concretely, we pre-trains one BCV-LR model on mixed videos of 'bigfish', 'maze', and 'starpilot', and then finetunned it in these seen tasks seperately. Different from FICC, we further employ two unseen tasks into evaluations. The results below show that BCV-LR enables effective policy imitation on all tasks. It achieves robust multi-task pre-training, where the pre-trained knowledge can be shared across both seen and unseen domains.
 
-According to your suggestions, we conducted additional experiments in Procgen to test the multi-task pre-training ability of BCV-LR, which follows the settings of FICC mutli-task experiments. Concretely, we pre-trains one model on mixed videos of 'bigfish', 'maze', and 'starpilot', and then finetunned the pre-trained models in these seen tasks seperately. Different from FICC, we also employ two unseen tasks into evaluations. The results in Table II show that BCV-LR enables effective policy imitation on all tasks. It achieves robust multi-task pre-training, where the pre-trained knowledge can be shared across both seen and unseen domains.
-
-**Table II**
 ||Task|BCV-LR(multi-task)|PPO(single-task)|/|BCV-LR(single-task)|
 |-|-|-|-|-|-| 
 |seen|bigfish|**32.2 ± 1.0**|0.9 ± 0.1||35.9|
@@ -55,32 +58,39 @@ According to your suggestions, we conducted additional experiments in Procgen to
 |unseen|bossfight|**5.5 ± 0.3**|0.1 ± 0.1||10.3|
 ||dodgeball|**9.5 ± 0.3**|1.1 ± 0.2||12.4|
 
-Then, we provide the video data efficiency experimental results. We provide BCV-LR with 5k, 20k, 50k, and 100k (default in main experiments) expert video transitions. Results demonstrate that BCV-LR enables effective policy learning with only 20k transitions. 50k transitions can support near-expert policy performance. You can refer to Appendix C.5 for curves and more details.
+Then, we provide the video data efficiency experimental results. We test BCV-LR with 5k, 20k, 50k, and 100k (default in main experiments) expert video transitions. Results demonstrate that BCV-LR enables effective policy learning with only 20k transitions. 50k transitions can support near-expert policy performance. Refer to Appendix C.5 for curves and more details.
 
-**Table III**
 |Video data of BCV-LR|5k|20k|50k|100k|/|video|
 |-|-|-|-|-|-|-| 
 |reacher_hard|0 ± 0|384 ± 153|799 ± 34|**900 ± 31**||967|
 |finger_spin|596 ± 17|901 ± 33|905 ± 70|**942 ± 48**||981|
+___
+>**answer to Q5: We conduct extra experiments to show the effect of a) whether finetuning visual encoder and b) whether finetuning latent actions.**
 
->**answer to Q5**
-As per your suggestions, we first conducted additional experiments, where we finetune the self-supervised encoder with $L_{la}$ and $L_{ft}$ repectively. The results in Table IV demonstrate that whether finetuning self-supervised visual representation doesn't yield apprent effct on policy performance. A similar phenomenon has been observed in self-supervised RL, leading some works to fine-tune self-supervised representations while others opt to freeze them.
+As per your suggestions, we first conducted additional experiments, where we finetune the self-supervised encoder with $L_{la}$ and $L_{ft}$ repectively. The results in Table IV demonstrate that whether finetuning self-supervised visual representation doesn't yield apprent effct on policy performance (curves are also similar). This phenomenon has also been observed in self-supervised RL, leading some works to fine-tune self-supervised representations while others opt to freeze them.
 
-**Table IV**
 |Task|Finetuning with $L_{la}$|Finetuning with $L_{ft}$|No visual finetuning|
 |-|-|-|-|
 |reacher_hard|876 ± 15|**906 ± 65**|900 ± 31|
 |finger_spin|937 ± 26|920 ± 57|**942 ± 48**|
 
-Then, we provide the experiments to show the impact on performance of not updating the latent action predictor with $L_{ft}$ in the online phase. Partial results are presented in Table V, demonstrating that utilizing the environmental actions to finetune pre-trained latent actions is a crucial step in BCV-LR, especially in DMControl tasks. This is because, compared to discrete video game benchmarks, DMControl features continuous action spaces and strong partial observability. These characteristics make unsupervised latent action extraction more challenging, thereby leading to relatively higher gains during the online latent action fine-tuning. Please refer to Sec.4.4 for more ablation results, where we also experimentally demonstrate the necessity of pre-training latent actions for continuous control.
+Then, we provide the experiments to show the impact on performance of not updating the latent action predictor with $L_{ft}$ in the online phase. Partial results are presented in Table V (denoted as BCV-LR w/o ft), demonstrating that utilizing the environmental actions to finetune pre-trained latent actions is a crucial step in BCV-LR, especially in DMControl tasks. This is because, compared to discrete video game benchmarks, DMControl features continuous action spaces and strong partial observability. These characteristics make unsupervised latent action extraction more challenging, thereby leading to relatively higher gains during the online latent action fine-tuning. Please refer to Sec.4.4 for more ablation results, where we also experimentally demonstrate the necessity of pre-training latent actions for continuous control.
 
-**Table V**
 ||Task|BCV-LR|BCV-LR w/o ft|
 |-|-|-|-|
 |DMControl|point_mass_easy|**800 ± 25**|22 ± 2|
 ||jaco_reach_bottom_left|**123 ± 39**|15 ± 10|
 |Procgen|starpilot|**54.8 ± 1.4**|29.2 ± 10.6|
 ||fruitbot|**27.5 ± 1.5**|24.2 ± 2.0|
+
+___
+|Metaworld|BCV-LR|BCO|DrQv2|/|video|
+|-|-|-|-|-|-| 
+|Faucet-open|**0.82 ± 0.20**|0.13 ± 0.19|0.00 ± 0.00||1|
+|Reach|**0.63 ± 0.25**|0.03 ± 0.05|0.13 ± 0.12||1|
+|Drawer-open|**0.92 ± 0.12**|0.13 ± 0.09|0.00 ± 0.00||1|
+|Faucet-close|**0.98 ± 0.04**|0 ± 0|0.50 ± 0.28 ||1|
+|Mean SR|**0.84**|0.07|0.16||1|
 
 
 
