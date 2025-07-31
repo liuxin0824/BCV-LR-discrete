@@ -282,13 +282,16 @@ Of course, we would like to say that BCV-LR is designed for the ILV (imitation l
 
 
 ## R4
-We greatly appreciate the reviewer's careful reading and strong recognition of our work! We have carefully reviewed your comments, addressed your questions, and further improved our paper based on your feedback!
+We greatly appreciate the reviewer's careful reading, constructive reviews, and strong recognition of our work! We have carefully reviewed your comments, addressed your questions, and further improved our paper based on your feedback!
 ___
 >**Q1：How general is the learned encoder? Is the shift image + contrastive loss learn useful features for non-video games, say real world robotics tasks? Or will this only work for relatively simplistic videos/environments?**
 
-We apply this ‘shift image + contrastive loss’ with reconstruction (Eq.1, line 185, main paper) for Procgen video games because it has been proven effective in these kinds of tasks [1,2]. As shown in Sec.3.1.1 (line 174, main paper), BCV-LR is easily compatible with any action-free self-supervised tasks, and it can adapt to different types of domains by choosing appropriate self-supervised objectives. This motivates us to choose another prototype-based temporal association loss (Eq.10, line 549, Appendix) for DMControl environments where the temporal understanding is crucial and this loss has been proven better than ‘shift image + contrastive loss’ in DMControl [3]. To this end, BCV-LR can involve more advanced self-supervised objectives (e.g., ViT-based masked reconstruction [4,5]) for more challenging tasks (e.g., real-world manipulation) if necessary. In addition, BCV-LR can also be combined with an off-the-shelf, well-trained encoder, which makes its potential not limited to only video game environments.
-___
+We apply this ‘shift image + contrastive loss’ with reconstruction (Eq.1, line 185, main paper) for Procgen video games because it has been proven effective in these kinds of tasks [1,2]. As shown in Sec.3.1.1 (line 174, main paper), BCV-LR is easily compatible with any action-free self-supervised tasks, and it can adapt to different types of domains by choosing appropriate self-supervised objectives. This motivates us to choose another prototype-based temporal association loss (Eq.10, line 549, Appendix) for DMControl environments where the temporal understanding is crucial and this loss has been proven better than ‘shift image + contrastive loss’ in DMControl [3]. 
 
+To this end, BCV-LR can involve more advanced self-supervised objectives (e.g., ViT-based masked reconstruction [4,5]) for more challenging tasks (e.g., real-world manipulation) if necessary. In addition, BCV-LR can also be combined with an off-the-shelf, well-trained encoder, which makes its potential not limited to only video game environments.
+
+
+___
 >**Q2:How well does the mapping from latent action to action work in more complex environments, e.g., robot controls rather than just video game controls?**
 
 In addition to the video games, we also demonstrate the advantages of BCV-LR on DMControl benchmark which consists of several continuous robotic control tasks. We summarize the average results below. More details are provided in Sec.4.3 (main paper) and Sec.C.1 (Appendix).
@@ -313,9 +316,13 @@ In addition, we further conduct additional experiments in the Metaworld manipula
 
 ___
 [1]Become a Proficient Player with Limited Data through Watching Pure Videos. ICLR 2023
+
 [2]Curl: Contrastive unsupervised representations for reinforcement learning. ICML 2020
+
 [3]Reinforcement learning with prototypical representations. ICML 2021
+
 [4]Masked world models for visual control. CoRL 2023
+
 [5]Mask-based Latent Reconstruction for Reinforcement Learning. Neurips 2022
 
 
