@@ -55,7 +55,7 @@ According to your suggestions, we conducted additional multi-task experiments fo
 |unseen|bossfight|**5.5 ± 0.3**|0.1 ± 0.1||10.3|
 ||dodgeball|**9.5 ± 0.3**|1.1 ± 0.2||12.4|
 
-Then, we provide the video data efficiency experimental results. We test BCV-LR with 5k, 20k, 50k, and 100k (default in main experiments) video transitions. Results demonstrate that BCV-LR enables effective policy learning with only 20k transitions. 50k transitions can support near-expert policy performance. Refer to Appendix C.5 for curves and more details.
+Then, we provide the video data efficiency experimental results. We test BCV-LR with 5k, 20k, 50k, and 100k (default in main experiments) video transitions. Results demonstrate that BCV-LR enables effective policy learning with only 20k transitions. 50k transitions can support near-expert performance. Refer to Appendix C.5 for curves and more details.
 
 |Video data of BCV-LR|5k|20k|50k|100k|/|video|
 |-|-|-|-|-|-|-| 
@@ -71,7 +71,7 @@ As per your suggestions, we first conducted additional experiments, where we fin
 |reacher_hard|876 ± 15|**906 ± 65**|900 ± 31|
 |finger_spin|937 ± 26|920 ± 57|**942 ± 48**|
 
-Then, we provide the experiments to show the impact on performance of not updating the latent action predictor with $L_{ft}$ in the online phase. Partial results are presented in Table V (denoted as BCV-LR w/o ft), demonstrating that utilizing the environmental actions to finetune pre-trained latent actions is a crucial step in BCV-LR, especially in DMControl tasks. Please refer to Sec.4.4 for more ablation results.
+Then, we provide the experiments to show the impact on performance of not updating the latent action predictor with $L_{ft}$ in the online phase (denoted as 'BCV-LR w/o ft'). Partial results are below, demonstrating that utilizing the environmental actions to finetune pre-trained latent actions is a crucial step in BCV-LR, especially in DMControl tasks. Please refer to Sec.4.4 (main paper) for more results.
 
 ||Task|BCV-LR|BCV-LR w/o ft|
 |-|-|-|-|
