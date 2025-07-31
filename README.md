@@ -1,7 +1,7 @@
 # BCV-LR
 ### R1
 
-We appreciate your careful reading and professional comments! In response to your feedback, we supplement the missing related works and further conduct several supplementary experiments, which greatly improves the quality of the paper. We hope these revisions will meet your expectations!
+We appreciate your careful reading and professional comments! In response to your feedback, we have supplemented the missing related works and further conduct several supplementary experiments, which greatly improves the quality of the paper. We hope these revisions will meet your expectations!
 
 ___
 >**W1:I am not sure whether the offline stage is individually conducted on each task or jointly conducted on a multi-task dataset. The practical significance of video behavior cloning in a single-task setting is limited.**
@@ -108,13 +108,14 @@ ___
 
 
 ### R3
-We are deeply grateful to the reviewer for your meticulous reading and positive recognition of our work! We have further enhanced our paper in light of your feedback and answered your questions 
+We are deeply grateful to the reviewer for your careful reading, constructive reviews, and strong recommendation! We have further enhanced our paper in light of your feedback by supplementing more experiments and discussions!
 ___
 >**Q1&Weakness2：Stage 3. (as per the summary above), in which the latent action model is finetuned and the action decoder is trained, requires real actions to be observed via environment interaction. It is unclear what is the impact of the schedule of environment interactions, how exactly the phases are optimally alternated so as to sample iteratively from the policy learned online via the concurrent step 4. Does this matter?**
 
-The BCV-LR online stage contains three parts. First, we a) allow the agent to interact with the environment for a fixed number of steps using its policy and enrich the experience buffer. Immediately after that, b) we perform finetuning of the latent action and training of the action decoder on the experience buffer. Then, c) using expert videos, we train the latent policy to imitate the finetuned latent action. After this, we will return to part a) and complete the cyclic online policy learning. This alternation is intuitive, that is, first collect new data of higher quality, then use the new data to fine-tune the latent action, and finally let the policy learn the fine-tuned latent action to achieve performance improvement. You can refer to Sec.A.1 (Appendix) for Pseudo Code.
+The BCV-LR online stage contains three parts. First, we (a) allow the agent to interact with the environment for a fixed number of times using its policy and collect transitions to enrich the experience buffer. Immediately after that, (b) we perform finetuning of the latent action and training of the action decoder on the experience buffer. Then, (c) we train the latent policy to imitate the finetuned latent action predicted from expert videos. After this, the BCV-LR policy is improved and we return to part a) to collect better training data, which forms a cyclic online policy learning. This alternation is intuitive, that is, first collect new data of higher quality, then use the better data to obtain the better latent actions from expert videos, and finally let the policy learn the better latent actions to achieve performance improvement. You can refer to Sec.A.1 (Appendix) for concrete pseudo code of BCV-LR and we will further clarify the descriptions in the methodology section to make them more comprehensible to readers.
 
-In previous experiments, we did not adjust the number of steps for each interaction, but kept it fixed at a relatively large value from start to finish (for example, we fixed the step number of step (1) as 1000) and ultimately achieved satisfactory results. To answer your question, we conduct additional experiments, where use a smaller interation number (1000->2) and correspondingly reduced the number of update times for latent actions (100->1) and latent policies (1000->2) after each interaction, making BCV-LR perform in a fashion akin to off-policy RL. The results in Table I show that it can still achieve effective learning when the step number is reduced, which demonstrates that BCV-LR is robust to the schedule of environment interactions.
+**For the impact of the schedule of environment interactions.** In previous experiments, we did not adjust the number of interactions for each cycle, but kept it fixed at a relatively large value from start to finish (for example, we fixed the number of collected transitions in part (a) as 1000 in DMControl) and ultimately achieved satisfactory results. To answer your question, we conduct additional experiments, where we try a much smaller interaction number (1000->2) and correspondingly reduce the number of update times for latent actions (100->1) and latent policies (1000->2) in each interaction, making BCV-LR perform in a fashion akin to off-policy RL. We denote this variant as 'BCV-LR(1000->2)'. The results in Table I show that BCV-LR can still achieve effective learning, which demonstrates that BCV-LR is robust to the schedule of environment interactions.
+
 **Table I**
 | task  | BCV-LR(1000->2) |  BCV-LR |   DrQv2| / |video|
 | - | - | - | - | - | - | 
@@ -123,7 +124,7 @@ In previous experiments, we did not adjust the number of steps for each interact
 ___
 >**Q2&Weakness4: How does the method compare to performing the steps in a fashion akin to LAPA? (No online learning, only imitation learning alignment on ground truth expert action?**
 
-To answer your questions, we further conduct additional experiments, where we let BCV-LR performs latent action finetuning and policy imitation with a few action-labeled expert transitions. Concretely, we maintain the original pre-training stage, while use 10k offline expert transitions to achieve offline imitation learning alignment. The results in Table (RL denotes DrQv2 for DMControl while PPO for procgen) demonstrate that BCV-LR can also well achieve offline imitation learning alignment. Of course, we would like to say that BCV-LR is designed for the ILV (imitation learning from videos), a much harder variant of the classical ILO (imitation learning from observation only) problem, where the employment of unsupervised online policy training adheres to the norms of this field.
+To answer your questions, we further conduct additional experiments, where we let BCV-LR perform latent action finetuning and policy imitation with a few action-labeled expert transitions. Concretely, we maintain the original pre-training stage and use 10k offline action-labeled expert transitions to achieve offline latent action finetuning and policy cloning with the original losses. The results in Table II (RL denotes DrQv2 for DMControl and PPO for procgen) demonstrate that BCV-LR can also achieve offline imitation learning alignment well if expert actions are provided. Of course, we would like to say that BCV-LR is designed for the ILV (imitation learning from videos), a much harder variant of the classical ILO (imitation learning from observation only) problem, where the employment of unsupervised online policy training without accessing expert actions adheres to the norms of this field.
 
 **Table II**
 || task  | BCV-LR-offline |  BCV-LR |  RL | / |video|
@@ -135,7 +136,7 @@ ___
 
 >**Weakness3: The method as requested does require a source of ground truth actions from the videos, it is thus not strictly suitable for solving pressing hard problems for real world robotics, e.g. learning from real human videos and then transferring the policies to robots. This is also related to the benchmarks being limited to classic "toy RL" simulation environments.**
 
-We agree with your comment. Since it is highly challenging to balance video imitation performance and efficiency without access to expert actions or expert rewards, our experiments have primarily been conducted in relatively standard RL environments to address this open question, and we have not extended our work to real-world tasks or considered large-scale cross-domain pre-training, which are of greater significance. Taking your comment into account, we further conduct some experiments in Metaworld manipulation benchmark, which may demonstrate a wider application of BCV-LR for robots. 
+We agree with your comment! Since it is highly challenging to balance video imitation performance and efficiency without access to expert actions or expert rewards, our experiments have primarily been conducted in relatively standard RL environments to address this open question, and we have not extended our work to real-world tasks or considered large-scale cross-domain pre-training, which are of greater significance. Taking your comment into account, we further conduct some experiments in Metaworld manipulation benchmark, which may demonstrate a wider application of BCV-LR for robots. 
 
 For each Metaworld task, only 50k environmental steps are allowed, with remaining settings similar to that of DMControl. Results are shown in Table III. In this interaction-limited situation, BCV-LR can still derive effective manipulation skills from expert videos without accessing expert actions and rewards, which demonstrates its wider range of applications and potential for generalizing to real-world manipulation tasks. Furthermore, we would like to add a discussion on real-world experiments and cross-domain knowledge transferring in the 'Limitation and Future Work' sections to make our paper more comprehensive.
 
@@ -155,16 +156,16 @@ For each Metaworld task, only 50k environmental steps are allowed, with remainin
 
 
 ### R4
-We greatly appreciate the reviewer's careful reading and recognition of our work! We have carefully reviewed your comments, addressed your questions, and further improved our paper based on your feedback!
+We greatly appreciate the reviewer's careful reading and strong recognition of our work! We have carefully reviewed your comments, addressed your questions, and further improved our paper based on your feedback!
 ___
 >**Q1：How general is the learned encoder? Is the shift image + contrastive loss learn useful features for non-video games, say real world robotics tasks? Or will this only work for relatively simplistic videos/environments?**
 
-We apply this ‘shift image + contrastive loss’ (Eq.1, Line 185, Mainpaper) for Procgen video games because it has been proven effective in these kinds of tasks. As shown in Sec.3.1.1 (Line 174, Mainpaper), BCV-LR is easily compatible with any action-free self-supervised tasks and it can adapt to different types of domains by choosing appropriate self-supervised objectives. This motivates us to choose another prototype-based temporarl loss (Eq.10, Line 549, Appendix) for Deepmind control tasks in our experiments, where the temporarl understanding is crucial for agents and this temporarl loss has been proven better than contrastive loss in previous works. To this end, BCV-LR can involve more advanced self-supervised objective (e.g., ViT-based masked reconstruction) for more challenging tasks (e.g., real-world tasks) if necessary. In addition, BCV-LR can also be combined with an off-the-shelf well-trained encoder, which makes its potential not limited to only video game environments.
+We apply this ‘shift image + contrastive loss’ with reconstruction (Eq.1, line 185, main paper) for Procgen video games because it has been proven effective in these kinds of tasks [1,2]. As shown in Sec.3.1.1 (line 174, main paper), BCV-LR is easily compatible with any action-free self-supervised tasks, and it can adapt to different types of domains by choosing appropriate self-supervised objectives. This motivates us to choose another prototype-based temporal loss (Eq.10, line 549, Appendix) for DMControl environments where the temporal understanding is crucial and this loss has been proven better than ‘shift image + contrastive loss’ in DMControl [3]. To this end, BCV-LR can involve more advanced self-supervised objectives (e.g., ViT-based masked reconstruction [4,5]) for more challenging tasks (e.g., real-world manipulation) if necessary. In addition, BCV-LR can also be combined with an off-the-shelf, well-trained encoder, which makes its potential not limited to only video game environments.
 ___
 
 >**Q2:How well does the mapping from latent action to action work in more complex environments, e.g., robot controls rather than just video game controls?**
 
-In addition to the video games, we also demonstrate the advantages of BCV-LR on DMControl benchmark which consists of several continuous robotic control tasks. We summarize the average results below. More details are provided in Sec.4.3 (mainpaper) and Sec.C.1 (Appendix).
+In addition to the video games, we also demonstrate the advantages of BCV-LR on DMControl benchmark which consists of several continuous robotic control tasks. We summarize the average results below. More details are provided in Sec.4.3 (main paper) and Sec.C.1 (Appendix).
 
 | DMControl-8-tasks  | BCV-LR  | LAIFO   | BCO  |UPESV |TACO  | DrQv2| / |video|
 | - | - | - | - | - | - |  - | - | - |
@@ -172,7 +173,7 @@ In addition to the video games, we also demonstrate the advantages of BCV-LR on 
 | Video-norm Mean Score  | **0.78**   | 0.20  | 0.31  | 0.03     | 0.45  | 0.34 | | 1.00|
 
 
-In addition, we further conducted additional experiments in Metaworld manipulation benchmark. Only 50k environmental steps are allowed for each Metaworld task, with remaining settings similar to that of DMControl. Results are shown below. In this interaction-limited situation, BCV-LR can still derive effective manipulation skills from expert videos without accessing expert actions and rewards, which demonstrates its wider range of applications and potential for generalizing to real-world manipulation tasks.
+In addition, we further conduct additional experiments in the Metaworld manipulation benchmark. Only 50k environmental steps are allowed for each Metaworld task, with remaining settings similar to that of DMControl. Results are shown below. In this interaction-limited situation, BCV-LR can still derive effective manipulation skills from expert videos without accessing expert actions and rewards, which demonstrates its wider range of applications and potential for generalizing to real-world manipulation tasks. Furthermore, we would like to add a discussion about real-world tasks in the 'Limitation and Future Work' sections to make our paper more comprehensive.
 
 | Metaworld  | BCV-LR | BCO   | DrQv2| / |video|
 | - | - | - | - | - | - | 
@@ -183,4 +184,10 @@ In addition, we further conducted additional experiments in Metaworld manipulati
 | Mean SR| **0.84**   | 0.07  | 0.16 |   | 1.00 |
 
 ___
+[1]Become a Proficient Player with Limited Data through Watching Pure Videos. ICLR 2023
+[2]Curl: Contrastive unsupervised representations for reinforcement learning. ICML 2020
+[3]Reinforcement learning with prototypical representations. ICML 2021
+[4]Masked world models for visual control. CoRL 2023
+[5]Mask-based Latent Reconstruction for Reinforcement Learning. Neurips 2022
+
 
