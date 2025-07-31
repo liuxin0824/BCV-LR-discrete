@@ -1,7 +1,7 @@
 # BCV-LR
 ### R1
 
-We appreciate your careful reading and professional comments! In response to your feedback, we have supplemented the missing important works and further conducted several supplementary experiments, which greatly improves the quality of the paper. We hope these revisions will meet your expectations!
+We appreciate your careful reading and professional comments! In response to your feedback, we supplement the missing related works and further conduct several supplementary experiments, which greatly improves the quality of the paper. We hope these revisions will meet your expectations!
 
 ___
 >**W1:I am not sure whether the offline stage is individually conducted on each task or jointly conducted on a multi-task dataset. The practical significance of video behavior cloning in a single-task setting is limited.**
@@ -13,7 +13,7 @@ ___
 LAPO has indeed inspired many works on multi-task pre-training. However, according to the final published version of LAPO and its open-source code, it uses a 'full' distribution for each task in Procgen to ensure intra-task diversity (e.g., the 'maze' task includes mazes of different sizes, colors, and layouts) while does not perform cross-task 'multi-task learning' (i.e., it achieves pre-training on 'maze' videos and then performs online learning in the 'maze' task). The Procgen experiments of BCV-LR have strictly followed LAPO's setup in terms of environment configuration and we use the same video dataset as that of LAPO, thus ensuring a fair comparison. Please feel free to let us know if you have any further questions!
 
 ___
-Due to space constraints, we can't list your concrete questions here. Please refer to your review section. We apologize for the inconvenience!
+Due to space constraints, we can't list your concrete questions. Please refer to your review section. We apologize for the inconvenience!
 >**answer to Q1: We supplement the reference and discussion of JPET.**
 
 Thank you for your careful reading! BCV-LR does utilize information from environmental actions and our original intention was to emphasize that it does not rely on 'expert' action labels. We have replaced "without the need to access any other supervision" with "without the need to access any other expert supervision" to eliminate any ambiguity. Additionally, JPET[1] utilizes a mixed dataset containing video data for reward-free policy learning, which is very relevant to our work and we missed it. We now add the citation and discussion of JPET in the related work (Please note that we are temporarily unable to update the paper now).
@@ -29,7 +29,7 @@ Thanks for your careful reading, and we supplemented FICC [2] in the related wor
 
 If you have any questions, please feel free to let us know!
 ___
->**answer to Q3: We explain that the single-task setting and training data doesn't cause unfairness. We conduct additional experiments on LAPO's BC variant.**
+>**answer to Q3: We explain that the single-task setting and training data don't cause unfairness. We conduct extra experiments on LAPO's BC variant.**
 
 As we explained in our answer to W2, LAPO also focuses on single-task settings. FICC does include multi-task pre-training experiments, but its main results are from single-task experiments.​
 What’s more, the Procgen video we use is the same as LAPO’s original data, as stated in Sec.4.2 (line286 mainpaper). This means all video-based methods have expert data of the same quality.​
@@ -81,14 +81,14 @@ Then, we provide the experiments to show the impact on performance of not updati
 ||fruitbot|**27.5 ± 1.5**|24.2 ± 2.0|
 
 ___
-In addition, we further conducted additional experiments in Metaworld. Only 50k environmental steps are allowed for each Metaworld task, with remaining settings similar to that of DMControl. Results demonstrates BCV-LR's wider range of applications and potential for generalizing to real-world manipulation tasks.
+In addition, we further conducted additional experiments in Metaworld. Only 50k steps are allowed for each task, with remaining settings similar to that of DMControl. Results demonstrates BCV-LR's wider range of applications and potential for generalizing to real-world manipulation tasks.
 
 |Metaworld|BCV-LR|BCO|DrQv2|/|video|
 |-|-|-|-|-|-| 
 |Faucet-open|**0.82 ± 0.20**|0.13 ± 0.19|0.00 ± 0.00||1|
 |Reach|**0.63 ± 0.25**|0.03 ± 0.05|0.13 ± 0.12||1|
 |Drawer-open|**0.92 ± 0.12**|0.13 ± 0.09|0.00 ± 0.00||1|
-|Faucet-close|**0.98 ± 0.04**|0 ± 0|0.50 ± 0.28 ||1|
+|Faucet-close|**0.98 ± 0.04**|0.00 ± 0.00|0.50 ± 0.28 ||1|
 |Mean SR|**0.84**|0.07|0.16||1|
 
 ___
