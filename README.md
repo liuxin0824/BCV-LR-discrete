@@ -24,8 +24,11 @@ Thanks for your careful reading, and we now have supplemented FICC [2] in the re
 
 1. FICC provides code for its pre-training part while doesn't offer code for fine-tuning the pre-trained model and combining it with its MCTS-based backbone online. This makes it difficult for us to reproduce this work within the short timeframe of the rebuttal period.
 2. FICC has not been evaluated on the Procgen. Moreover, whether its MCTS-based backbone EfficientZero (EZ)[3] is applicable to procedurally generated environments remains an open question. This lack of information—such as hyperparameter settings and EZ framework in Procgen—leaves us unable to ensure the validity of our reproductions.
-3. We have already compared BCV-LR against 6 advanced and popular baselines on Procgen, including the state-of-the-art RL and ILV algorithms. Additionally, to our knowledge, none of these methods have been directly compared with the FICC. Thus, we feel that the current set of comparisons on Procgen is adequate, a view that also aligns with the feedback from Reviewer HHys and TLPv.
+3. We have already compared BCV-LR against 6 advanced and popular baselines on Procgen, including the state-of-the-art RL and ILV algorithms. Additionally, to our knowledge, none of these methods have been directly compared with the FICC. 
 4. The backbone of FICC, EZ, is built on MCTS and thus requires considerable training time. As noted in EZ [3], it take 28 GPU hours for 100k steps in discrete control, whereas BCV-LR online stage requires only around 1 GPU hour on both discrete and continuous domains. This relatively high computational cost has led many subsequent works [4,5] to refrain from direct comparisons with EZ, even in Atari experiments. In addition, this consumption also means it's hard to obtain its results within the limited timeframe available.
+
+最好加一条方法上的差异或描述，
+code的原因放最后
 
 If you have any questions, please feel free to let us know!
 ___
@@ -124,7 +127,9 @@ ___
 
 We understand your concern! Since it is highly challenging to balance video imitation performance and efficiency without access to expert actions or expert rewards, our experiments have primarily been conducted in relatively standard visual RL environments to answer this open question, and we have not extended our work to real-world tasks or considered internet-scale pre-training, which are of greater significance. Based on your feedback, we further conduct some extra experiments in Metaworld manipulation benchmark, which may demonstrate a wider application of BCV-LR.
 
-For each Metaworld task, only 50k environmental steps are allowed, with remaining settings similar to that of DMControl. Results are shown in Table III. In this interaction-limited situation, BCV-LR can still derive effective manipulation skills from expert videos without accessing expert actions and rewards, which demonstrates its wider range of applications and potential for generalizing to real-world manipulation tasks. Furthermore, we would like to add a discussion on real-world tasks and internet-scale knowledge transferring in the 'Limitation and Future Work' sections to make our paper more comprehensive.
+For each Metaworld task, only 50k environmental steps are allowed, with remaining settings similar to that of DMControl. Results are shown in Table III. In this interaction-limited situation, BCV-LR can still derive effective manipulation skills from expert videos without accessing expert actions and rewards, which demonstrates its wider range of applications and potential for generalizing to real-world manipulation tasks. 
+
+先阐述扩展大规模视频里面面临的挑战是啥，大概可能得解决思路啥，后再加一句，future work里面讨论
 
 **Table I**
 |Metaworld-50k|BCV-LR|BCO|DrQv2|/|video|
@@ -137,7 +142,8 @@ For each Metaworld task, only 50k environmental steps are allowed, with remainin
 ___
 >**Q1:For continuous control tasks, they are relatively easy with low-dimensional action spaces. I'm curious how would the proposed methods work for environments with high-dimensional action spaces. (For example, take humanoid & dog from Deepmind Control Suite)**
 
-Following your suggestion, we attempt experiments on the 'dog' and 'humanoid' domains. We find that these two domains are highly challenging even for advanced RL methods that use expert rewards. Specifically, we first try training agents to collect expert data via RL, but observe that both TACO and DrQ fail within 5M steps (obtaining scores lower than 5). Furthermore, we run DrQv2 on the 'humanoid_walk' task for 20M steps across 4 seeds, with only 1 run successfully learning a policy. We use this 20M-step policy to collect data, and then train BCV-LR and all baselines under the 100k-step setting—all of which failed. (Table II) This indicates that complex dynamics and action spaces remain significant challenges for current policy learning algorithms, even when expert rewards are provided. Meanwhile, BCV-LR, which is designed to balance sample efficiency under more challenging settings (without access to rewards or expert actions), is not yet able to handle such tasks effectively. We would like to add the above discussion to the 'Limitations and Future Work' sections to make our paper more comprehensive.
+Following your suggestion, we attempt experiments on the 'dog' and 'humanoid' domains. We find that these two domains are highly challenging even for advanced RL methods that use expert rewards. Specifically, we first try training agents to collect expert data via RL, but observe that both TACO and DrQ fail within 5M steps (obtaining scores lower than 5). Furthermore, we run DrQv2 on the 'humanoid_walk' task for 20M steps across 4 seeds, with only 1 run successfully learning a policy. We use this 20M-step policy to collect data, and then train BCV-LR and all baselines under the 100k-step setting—all of which failed. (Table II) This indicates that complex dynamics and action spaces remain significant challenges for current policy learning algorithms, even when expert rewards are provided. Meanwhile, BCV-LR, which is designed to balance sample efficiency under more challenging settings (without access to rewards or expert actions), is not yet able to handle such tasks effectively. 
+
 **Table II**
 |  | BCV-LR  | LAIFO   | BCO  |UPESV |TACO  | DrQv2| / |video|
 | - | - | - | - | - | - |  - | - | - |
@@ -148,14 +154,17 @@ ___
 
 As shown in Sec.3.1.1 (line 174, main paper), BCV-LR is designed to be easily compatible with any action-free self-supervised tasks (it completely decouples visual learning from subsequent training), and it can adapt to different types of tasks by choosing appropriate self-supervised objectives. To this end, we apply different latent feature training losses for Procgen and DMControl. Concretely, we employ the 'contrastive loss with image reconstruction' (Eq.1, line 185, main paper) for Procgen video games, because it has been proven effective in these kinds of tasks [1,2]. For DMControl environments where the temporal understanding is crucial, we choose another prototype-based temporal association loss (Eq.10, line 549, Appendix) because invoving temporal information into self-supervised objectives have been proven necessary in DMControl [3]. In summary, BCV-LR can involve more advanced self-supervised objectives for more challenging tasks if necessary, which makes its potential not limited to specific environments.
 
+需要讲在正文什么地方修改
 ___
 >**Q3:The reconstruction loss of feature learning seems suboptimal especially for environments with distracting backgrounds. The authors mention that they get better performance with this loss added. But is it because the visual observations of the environments it tests on are too simple?**
 
-We agree with your opinion on reconstruction loss and some previous works [6] have demonstrated the limitation of reconstruction when faced with visual distraction. As we explain in our answer to Q2, BCV-LR employs the reconstruction loss in Procgen because of its effectiveness in video games [1], but it is not limited to this reconstruction loss. BCV-LR is designed to be easily compatible with any action-free self-supervised tasks (it completely decouples visual learning from subsequent training), and it can adapt to different types of tasks by choosing appropriate self-supervised objectives. To this end, BCV-LR can involve more advanced self-supervised objectives (e.g., ViT-based masked reconstruction [4,5] or distraction-robust prototypical representation [6]) for more challenging tasks if necessary. In addition, BCV-LR can also be combined with an off-the-shelf, well-trained encoder, which makes its potential not limited to both tasks and experimental settings. Considering your concern, we would like to add above discussion in the 'Limitation and Future Work' section to inspire more thinking.
+We agree with your opinion on reconstruction loss and some previous works [6] have demonstrated the limitation of reconstruction when faced with visual distraction. As we explain in our answer to Q2, BCV-LR employs the reconstruction loss in Procgen because of its effectiveness in video games [1], but it is not limited to this reconstruction loss. BCV-LR is designed to be easily compatible with any action-free self-supervised tasks (it completely decouples visual learning from subsequent training), and it can adapt to different types of tasks by choosing appropriate self-supervised objectives. To this end, BCV-LR can involve more advanced self-supervised objectives (e.g., ViT-based masked reconstruction [4,5] or distraction-robust prototypical representation [6]) for more challenging tasks if necessary. In addition, BCV-LR can also be combined with an off-the-shelf, well-trained encoder, which makes its potential not limited to both tasks and experimental settings. 
 
 ___
 >**Q4:A very relevant work [1] is missing.**
 We appreciate your careful reading, and now have supplemented the discussion of FICC [1] in the related work. Thank you!
+
+需要写具体怎么改，在正文哪个地方
 
 ___
 [1]Become a Proficient Player with Limited Data through Watching Pure Videos. ICLR 2023
@@ -215,7 +224,9 @@ ___
 
 We agree with your comment! Since it is highly challenging to balance video imitation performance and efficiency without access to expert actions or expert rewards, our experiments have primarily been conducted in relatively standard visual RL environments to answer this open question, and we have not extended our work to real-world tasks or considered large-scale cross-domain pre-training, which are of greater significance. Taking your comment into account, we further conduct some extra experiments in Metaworld manipulation benchmark, which may demonstrate a wider application of BCV-LR for robots. 
 
-For each Metaworld task, only 50k environmental steps are allowed, with remaining settings similar to that of DMControl. Results are shown in Table III. In this interaction-limited situation, BCV-LR can still derive effective manipulation skills from expert videos without accessing expert actions and rewards, which demonstrates its wider range of applications and potential for generalizing to real-world manipulation tasks. Furthermore, we would like to add a discussion on real-world tasks and cross-domain knowledge transferring in the 'Limitation and Future Work' sections to make our paper more comprehensive.
+For each Metaworld task, only 50k environmental steps are allowed, with remaining settings similar to that of DMControl. Results are shown in Table III. In this interaction-limited situation, BCV-LR can still derive effective manipulation skills from expert videos without accessing expert actions and rewards, which demonstrates its wider range of applications and potential for generalizing to real-world manipulation tasks.
+
+和前面一样
 
 **Table III**
 |Metaworld-50k|BCV-LR|BCO|DrQv2|/|video|
@@ -266,7 +277,7 @@ In addition to the video games, we also demonstrate the advantages of BCV-LR on 
 | Video-norm Mean Score  | **0.78**   | 0.20  | 0.31  | 0.03     | 0.45  | 0.34 | | 1.00|
 
 
-In addition, we further conduct additional experiments in the Metaworld manipulation benchmark. Only 50k environmental steps are allowed for each Metaworld task, with remaining settings similar to that of DMControl. Results are shown in Table II. In this interaction-limited situation, BCV-LR can still derive effective manipulation skills from expert videos without accessing expert actions and rewards, which demonstrates its wider range of applications and potential for generalizing to real-world manipulation tasks. Furthermore, we would like to add a discussion about real-world tasks in the 'Limitation and Future Work' sections to make our paper more comprehensive.
+In addition, we further conduct additional experiments in the Metaworld manipulation benchmark. Only 50k environmental steps are allowed for each Metaworld task, with remaining settings similar to that of DMControl. Results are shown in Table II. In this interaction-limited situation, BCV-LR can still derive effective manipulation skills from expert videos without accessing expert actions and rewards, which demonstrates its wider range of applications and potential for generalizing to real-world manipulation tasks. 
 
 **Table II**
 |Metaworld-50k|BCV-LR|BCO|DrQv2|/|video|
