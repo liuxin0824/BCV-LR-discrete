@@ -101,6 +101,10 @@ ___
 [7]Decoupling representation learning from reinforcement learning.ICML21
 
 
+### R2
+
+
+
 
 
 ### R3
@@ -131,16 +135,17 @@ ___
 
 >**Weakness3: The method as requested does require a source of ground truth actions from the videos, it is thus not strictly suitable for solving pressing hard problems for real world robotics, e.g. learning from real human videos and then transferring the policies to robots. This is also related to the benchmarks being limited to classic "toy RL" simulation environments.**
 
-As the reviewer says,  our method has not yet been extended to more challenging real-world tasks, nor has it sufficiently explored knowledge transfer. We would like to provide some additional results, which may demonstrate the potential of our method in more task settings and application scenarios. First, we 
+We agree with your comment. Since it is highly challenging to balance video imitation performance and efficiency without access to expert actions or expert rewards, our experiments have primarily been conducted in relatively standard RL environments to address this open question, and we have not extended our work to real-world tasks or considered large-scale cross-domain pre-training, which are of greater significance. Taking your comment into account, we further conduct some experiments in Metaworld manipulation benchmark, which may demonstrate a wider application of BCV-LR for robots. 
 
-In addition, we further conducted additional experiments in Metaworld manipulation benchmark. Only 50k environmental steps are allowed for each Metaworld task, with remaining settings similar to that of DMControl. Results are shown below. In this interaction-limited situation, BCV-LR can still derive effective manipulation skills from expert videos without accessing expert actions and rewards, which demonstrates its wider range of applications and potential for generalizing to real-world manipulation tasks.
+For each Metaworld task, only 50k environmental steps are allowed, with remaining settings similar to that of DMControl. Results are shown in Table III. In this interaction-limited situation, BCV-LR can still derive effective manipulation skills from expert videos without accessing expert actions and rewards, which demonstrates its wider range of applications and potential for generalizing to real-world manipulation tasks. Furthermore, we would like to add a discussion on real-world experiments and cross-domain knowledge transferring in the 'Limitation and Future Work' sections to make our paper more comprehensive.
 
+**Table III**
 | Metaworld  | BCV-LR | BCO   | DrQv2| / |video|
 | - | - | - | - | - | - | 
 | Faucet-open| **0.82 ± 0.20**   | 0.13 ± 0.19  | 0.00 ± 0.00 |  | 1.00 |
 | Reach| **0.63 ± 0.25**   | 0.03 ± 0.05  | 0.13 ± 0.12 |  | 1.00 |
 | Drawer-open| **0.92 ± 0.12**   | 0.13 ± 0.09  | 0.00 ± 0.00  |  | 1.00 |
-| Faucet-close| **0.98 ± 0.04**   | 0 ± 0 | 0.50 ± 0.28 |  | 1.00 |
+| Faucet-close| **0.98 ± 0.04**   | 0.00 ± 0.00 | 0.50 ± 0.28 |  | 1.00 |
 | Mean SR| **0.84**   | 0.07  | 0.16 |   | 1.00 |
 
 
