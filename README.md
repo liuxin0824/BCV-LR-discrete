@@ -203,7 +203,14 @@ We hope these answers can meet your expectations, and we would be most grateful 
 
 
 ## R3
-We are deeply grateful to the reviewer for your careful reading, constructive reviews, and strong recommendation! We have further enhanced our paper in light of your feedback by supplementing more experiments and discussions!
+
+We are deeply grateful to the reviewer for your careful reading, constructive reviews, and strong recommendation of our paper! We have further enhanced our paper in light of your feedback by supplementing more experiments and discussions!
+
+___
+>**Weakness1：The overall method is complex, consisting of many stages that all have to work for the method to achieve its performance. The ablation study does however demonstrate that each component is required.**
+
+Thank you for your recognition of our experimental section. We agree with your opinion that the methodology section of BCV-LR is relatively complex. This complexity arises because achieving sample-efficient online policy learning from videos without access to expert actions or rewards is an extremely challenging task. To address this, BCV-LR incorporates multiple training stages, which allow it to obtain as much useful information as possible from both expert videos and environmental samples, which ultimately contributes to its promising results.
+
 ___
 >**Q1&Weakness2：Stage 3. (as per the summary above), in which the latent action model is finetuned and the action decoder is trained, requires real actions to be observed via environment interaction. It is unclear what is the impact of the schedule of environment interactions, how exactly the phases are optimally alternated so as to sample iteratively from the policy learned online via the concurrent step 4. Does this matter?**
 
@@ -216,28 +223,17 @@ The BCV-LR online stage contains three parts. First, we (a) allow the agent to i
 | - | - | - | - | - | - | 
 | reacher_hard |  875 ± 65 |  **900 ± 31**  | 92 ± 98  | | 967 |
 | finger_spin  | **956 ± 20**  | 942 ± 48  | 374 ± 264 || 981|
+
+
+
 ___
->**Q2&Weakness4: How does the method compare to performing the steps in a fashion akin to LAPA? (No online learning, only imitation learning alignment on ground truth expert action?**
-
-To answer your questions, we further conduct additional experiments, where we let BCV-LR perform latent action finetuning and policy imitation with a few action-labeled expert transitions. Concretely, we maintain the original pre-training stage and use 10k offline action-labeled expert transitions to achieve offline latent action finetuning and policy cloning with the original losses. The results in Table II (RL denotes DrQv2 for DMControl and PPO for procgen) demonstrate that BCV-LR can also achieve offline imitation learning alignment well if expert actions are provided. Of course, we would like to say that BCV-LR is designed for the ILV (imitation learning from videos), a much harder variant of the classical ILO (imitation learning from observation only) problem, where the employment of unsupervised online policy training without accessing expert actions adheres to the norms of this field.
-
-**Table II**
-|| task  | BCV-LR-offline |  BCV-LR |  RL | / |video|
-|-| - | - | - | - | - | - | 
-|DMControl| reacher_hard |  **938 ± 44** |  900 ± 31  | 92 ± 98  | | 967 |
-|| finger_spin  | **978 ± 7**  | 942 ± 48  | 374 ± 264 || 981|
-|Procgen| fruitbot  | **27.7 ± 0.4**  | 27.5 ± 1.5  | -1.9 ± 1.0 || 29.9|
-___
-
 >**Weakness3: The method as requested does require a source of ground truth actions from the videos, it is thus not strictly suitable for solving pressing hard problems for real world robotics, e.g. learning from real human videos and then transferring the policies to robots. This is also related to the benchmarks being limited to classic "toy RL" simulation environments.**
 
-We agree with your comment! Since it is highly challenging to balance video imitation performance and efficiency without access to expert actions or expert rewards, our experiments have primarily been conducted in relatively standard visual RL environments to answer this open question, and we have not extended our work to real-world tasks or considered large-scale cross-domain pre-training, which are of greater significance. Taking your comment into account, we further conduct some extra experiments in Metaworld manipulation benchmark, which may demonstrate a wider application of BCV-LR for robots. 
+We understand your concerns! Since it is highly challenging to balance video imitation performance and efficiency without access to expert actions or expert rewards, our experiments have primarily been conducted in relatively standard visual RL environments to answer the open question "is sample efficient ILV available" and have not been extended to real-world tasks or internet-scale pre-training, which are of greater significance. Taking your comment into account, we further conduct some extra experiments in Metaworld manipulation benchmark, which may demonstrate a wider application of BCV-LR for robots. 
 
-For each Metaworld task, only 50k environmental steps are allowed, with remaining settings similar to that of DMControl. Results are shown in Table III. In this interaction-limited situation, BCV-LR can still derive effective manipulation skills from expert videos without accessing expert actions and rewards, which demonstrates its wider range of applications and potential for generalizing to real-world manipulation tasks.
+For each Metaworld task, only 50k environmental steps are allowed, with remaining settings similar to that of DMControl. Results are shown in Table II. In this interaction-limited situation, BCV-LR can still derive effective manipulation skills from expert videos without accessing expert actions and rewards, which demonstrates its wider range of applications and potential for generalizing to real-world manipulation tasks.
 
-和前面一样
-
-**Table III**
+**Table II**
 |Metaworld-50k|BCV-LR|BCO|DrQv2|/|video|
 |-|-|-|-|-|-| 
 |Faucet-open|**0.82 ± 0.20**|0.13 ± 0.19|0.00 ± 0.00||1|
@@ -245,6 +241,24 @@ For each Metaworld task, only 50k environmental steps are allowed, with remainin
 |Drawer-open|**0.92 ± 0.12**|0.13 ± 0.09|0.00 ± 0.00||1|
 |Faucet-close|**0.98 ± 0.04**|0.00 ± 0.00|0.50 ± 0.28 ||1|
 |Mean SR|**0.84**|0.07|0.16||1|
+
+For internet-scale cross-domain video data, the main challenge BCV-LR may face stems from the difficulty of transferring visual knowledge. Considering that BCV-LR is designed to be easily compatible with any action-free self-supervised tasks, this issue could potentially be alleviated by involving more advanced self-supervised objectives or using off-the-shelf pre-trained encoders. Additionally, with the advancement of large video generation models, the acquisition of expert videos will become easier. This is particularly beneficial for methods like BCV-LR, which only require expert videos as supervision, and may even lead to new, more efficient training paradigms. We have added the above discussion in the future work section to inspire more thinking.
+
+
+___
+>**Q2&Weakness4: How does the method compare to performing the steps in a fashion akin to LAPA? (No online learning, only imitation learning alignment on ground truth expert action?**
+
+To answer your questions, we further conduct additional experiments, where we let BCV-LR perform latent action finetuning and policy imitation with a few action-labeled expert transitions. Concretely, we maintain the original pre-training stage and use 10k offline action-labeled expert transitions to achieve offline latent action finetuning and policy cloning with the original losses. The results in Table III (RL denotes DrQv2 for DMControl and PPO for procgen) demonstrate that BCV-LR can also achieve offline imitation learning well if expert actions are provided. 
+
+**Table III**
+|| task  | BCV-LR-offline |  BCV-LR |  RL | / |video|
+|-| - | - | - | - | - | - | 
+|DMControl| reacher_hard |  **938 ± 44** |  900 ± 31  | 92 ± 98  | | 967 |
+|| finger_spin  | **978 ± 7**  | 942 ± 48  | 374 ± 264 || 981|
+|Procgen| fruitbot  | **27.7 ± 0.4**  | 27.5 ± 1.5  | -1.9 ± 1.0 || 29.9|
+
+
+Of course, we would like to say that BCV-LR is designed for the ILV (imitation learning from videos) problem, a much harder variant of the classical ILO (imitation learning from observation only) problem, where the employment of unsupervised online policy training without accessing expert actions adheres to the norms of this field.
 
 
 
