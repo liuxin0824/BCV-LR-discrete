@@ -31,7 +31,7 @@ If you have any questions, please feel free to let us know!
 ___
 >**answer to Q3: We explain that the single-task setting and training data don't cause unfairness. We conduct extra experiments on LAPO's BC variant.**
 
-As we explained in our answer to W2, LAPO also focuses on single-task settings. FICC does include multi-task pre-training experiments, but its main results are from single-task experiments.​
+As we explain in our answer to W2, LAPO also focuses on single-task settings. FICC does include multi-task pre-training experiments, but its main results are from single-task experiments.​
 What’s more, the Procgen video we use is the same as LAPO’s original data, as stated in Sec.4.2 (line286 mainpaper). This means all video-based methods have expert data of the same quality.​
 As you asked, we conduct extra experiments: we replaced LAPO’s online RL loss with BC loss, then compared it with our BCV-LR. The results below show that LAPO-BC works well for policy learning in some tasks, but our BCV-LR still performs better.​
 We also show that BCV-LR can be used for multi-task pre-training in a fashion akin to FICC. Please refer to answer to Q4.
@@ -88,14 +88,14 @@ In addition, we further conducted additional experiments in Metaworld. Only 50k 
 |Faucet-open|**0.82 ± 0.20**|0.13 ± 0.19|0.00 ± 0.00||1|
 |Reach|**0.63 ± 0.25**|0.03 ± 0.05|0.13 ± 0.12||1|
 |Drawer-open|**0.92 ± 0.12**|0.13 ± 0.09|0.00 ± 0.00||1|
-|Faucet-close|**0.98 ± 0.04**|0.00 ± 0.00|0.50 ± 0.28 ||1|
+|Faucet-close|**0.98 ± 0.04**|0.00 ± 0.00|0.50 ± 0.28||1|
 |Mean SR|**0.84**|0.07|0.16||1|
 
 ___
 [1]Learning Video-Conditioned Policy on Unlabelled Data with Joint Embedding Predictive Transformer.ICLR25
 [2]Become a Proficient Player with Limited Data through Watching Pure Videos.ICLR23
 [3]Mastering Atari Games with Limited Data.Neurips21
-[4]Value-Consistent Representation Learning for Data-Efficient Reinforcement LearningAAAI23
+[4]Value-Consistent Representation Learning for Data-Efficient Reinforcement Learning.AAAI23
 [5]Mask-based Latent Reconstruction for Reinforcement Learning.Neurips22
 [6]Learning to act without actions.ICLR24
 [7]Decoupling representation learning from reinforcement learning.ICML21
@@ -120,7 +120,7 @@ ___
 We greatly appreciate the reviewer’s careful reading, detailed feedback, and recommendation of our paper! We have carefully reviewed your comments and further refined our paper based on your constructive reviews!
 
 ___
->**W1:The scope of the experiments are relatively limited. All experiments are conducted in simulation/"toy" environments (Procgen and DMControl). While these are standard benchmarks, it is unclear how well BCV-LR generalizes to internet-scale human videos and real-world robotics applications.**
+>**W:The scope of the experiments are relatively limited. All experiments are conducted in simulation/"toy" environments (Procgen and DMControl). While these are standard benchmarks, it is unclear how well BCV-LR generalizes to internet-scale human videos and real-world robotics applications.**
 
 We understand your concern! Since it is highly challenging to balance video imitation performance and efficiency without access to expert actions or expert rewards, our experiments have primarily been conducted in relatively standard visual RL environments to answer this open question, and we have not extended our work to real-world tasks or considered internet-scale pre-training, which are of greater significance. Based on your feedback, we further conduct some extra experiments in Metaworld manipulation benchmark, which may demonstrate a wider application of BCV-LR.
 
@@ -137,12 +137,29 @@ For each Metaworld task, only 50k environmental steps are allowed, with remainin
 ___
 >**Q1:For continuous control tasks, they are relatively easy with low-dimensional action spaces. I'm curious how would the proposed methods work for environments with high-dimensional action spaces. (For example, take humanoid & dog from Deepmind Control Suite)**
 
-Following your suggestion, we attempt experiments on the 'dog' and 'humanoid' domains. We find that these two domains are highly challenging even for advanced RL methods that use expert rewards. Specifically, we first try training agents to collect expert data via RL, but observe that both TACO and DrQ fail within 5M steps. Furthermore, we run DrQv2 on the 'humanoid_walk' task for 20M steps across 4 seeds, with only 1 run successfully learning a policy. We use this 20M-step policy to collect data, and then train BCV-LR and all baselines under the 100k-step setting—all of which failed. (Table II) This indicates that complex dynamics and action spaces remain significant challenges for current policy learning algorithms, even when expert rewards are provided. Meanwhile, BCV-LR, which is designed to balance sample efficiency under more challenging settings (without access to rewards or expert actions), is not yet able to handle such tasks effectively. We would like to add the above discussion to the 'Limitations and Future Work' sections to make our paper more comprehensive.
+Following your suggestion, we attempt experiments on the 'dog' and 'humanoid' domains. We find that these two domains are highly challenging even for advanced RL methods that use expert rewards. Specifically, we first try training agents to collect expert data via RL, but observe that both TACO and DrQ fail within 5M steps (obtaining scores lower than 5). Furthermore, we run DrQv2 on the 'humanoid_walk' task for 20M steps across 4 seeds, with only 1 run successfully learning a policy. We use this 20M-step policy to collect data, and then train BCV-LR and all baselines under the 100k-step setting—all of which failed. (Table II) This indicates that complex dynamics and action spaces remain significant challenges for current policy learning algorithms, even when expert rewards are provided. Meanwhile, BCV-LR, which is designed to balance sample efficiency under more challenging settings (without access to rewards or expert actions), is not yet able to handle such tasks effectively. We would like to add the above discussion to the 'Limitations and Future Work' sections to make our paper more comprehensive.
 **Table II**
 |  | BCV-LR  | LAIFO   | BCO  |UPESV |TACO  | DrQv2| / |video|
 | - | - | - | - | - | - |  - | - | - |
-| humanoid_walk-100k | **604**   | 158  | 336  | 18     | 310  | 232 | |529|
+| humanoid_walk-100k |1.3 ± 0.1  | 1.1 ± 0.0 | |  | 2.0 ± 0.2 | 1.9 ± 0.2| |529|
 
+___
+>**Q2:The author mention that during self-supervised representation learning phase, it also learns some temporal dynamics by aligning representation of $o_t$ with $o_{t+1}$, but this seems not appearing in Equation 1. So what's the overall objective for this stage. Is it Equation 1 (contrastive loss with image reconstruction ) plus temporal loss?**
+
+As shown in Sec.3.1.1 (line 174, main paper), BCV-LR is designed to be easily compatible with any action-free self-supervised tasks (it completely decouples visual learning from subsequent training), and it can adapt to different types of tasks by choosing appropriate self-supervised objectives. To this end, we apply different latent feature training losses for Procgen and DMControl. Concretely, we employ the 'contrastive loss with image reconstruction' (Eq.1, line 185, main paper) for Procgen video games, because it has been proven effective in these kinds of tasks [1,2]. For DMControl environments where the temporal understanding is crucial, we choose another temporal association loss (Eq.10, line 549, Appendix) because invoving temporal information into self-supervised objectives have been proven necessary in DMControl [3]. In summary, BCV-LR can involve more advanced self-supervised objectives for more challenging tasks if necessary, which makes its potential not limited to specific environments.
+
+___
+>**Q3:The reconstruction loss of feature learning seems suboptimal especially for environments with distracting backgrounds. The authors mention that they get better performance with this loss added. But is it because the visual observations of the environments it tests on are too simple?**
+
+As we explain in our answer to Q2, BCV-LR employs the reconstruction loss in video games because of its effectiveness in both previous work [1] and our experiments, while it is not limited to a certain self-supervised task. We agree with your opinion on reconstruction loss and some previous works have demonstrated the limitation of reconstruction when faced with visual distraction
+
+
+___
+[1]Become a Proficient Player with Limited Data through Watching Pure Videos. ICLR 2023
+[2]Curl: Contrastive unsupervised representations for reinforcement learning. ICML 2020
+[3]Reinforcement learning with prototypical representations. ICML 2021
+[4]Masked world models for visual control. CoRL 2023
+[5]Mask-based Latent Reconstruction for Reinforcement Learning. Neurips 2022
 
 
 
@@ -231,7 +248,7 @@ We greatly appreciate the reviewer's careful reading and strong recognition of o
 ___
 >**Q1：How general is the learned encoder? Is the shift image + contrastive loss learn useful features for non-video games, say real world robotics tasks? Or will this only work for relatively simplistic videos/environments?**
 
-We apply this ‘shift image + contrastive loss’ with reconstruction (Eq.1, line 185, main paper) for Procgen video games because it has been proven effective in these kinds of tasks [1,2]. As shown in Sec.3.1.1 (line 174, main paper), BCV-LR is easily compatible with any action-free self-supervised tasks, and it can adapt to different types of domains by choosing appropriate self-supervised objectives. This motivates us to choose another prototype-based temporal loss (Eq.10, line 549, Appendix) for DMControl environments where the temporal understanding is crucial and this loss has been proven better than ‘shift image + contrastive loss’ in DMControl [3]. To this end, BCV-LR can involve more advanced self-supervised objectives (e.g., ViT-based masked reconstruction [4,5]) for more challenging tasks (e.g., real-world manipulation) if necessary. In addition, BCV-LR can also be combined with an off-the-shelf, well-trained encoder, which makes its potential not limited to only video game environments.
+We apply this ‘shift image + contrastive loss’ with reconstruction (Eq.1, line 185, main paper) for Procgen video games because it has been proven effective in these kinds of tasks [1,2]. As shown in Sec.3.1.1 (line 174, main paper), BCV-LR is easily compatible with any action-free self-supervised tasks, and it can adapt to different types of domains by choosing appropriate self-supervised objectives. This motivates us to choose another prototype-based temporal association loss (Eq.10, line 549, Appendix) for DMControl environments where the temporal understanding is crucial and this loss has been proven better than ‘shift image + contrastive loss’ in DMControl [3]. To this end, BCV-LR can involve more advanced self-supervised objectives (e.g., ViT-based masked reconstruction [4,5]) for more challenging tasks (e.g., real-world manipulation) if necessary. In addition, BCV-LR can also be combined with an off-the-shelf, well-trained encoder, which makes its potential not limited to only video game environments.
 ___
 
 >**Q2:How well does the mapping from latent action to action work in more complex environments, e.g., robot controls rather than just video game controls?**
