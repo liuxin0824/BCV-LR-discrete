@@ -20,7 +20,7 @@ Thank you for your careful reading! BCV-LR does utilize information from environ
 ___
 >**answer to Q2: We add the reference and discussion of FICC and explain why it has not been included in the comparison for the time being.**
 
-Thanks for your careful reading, and we supplemented FICC [2] in the related work. That said, due to the following reasons, we have not yet included FICC in the experiments on ProcGen:
+Thanks for your careful reading, and we now have supplemented FICC [2] in the related work. That said, due to the following reasons, we have not yet included FICC in the experiments on ProcGen:
 
 1. FICC provides code for its pre-training part while doesn't offer code for fine-tuning the pre-trained model and combining it with its MCTS-based backbone online. This makes it difficult for us to reproduce this work within the short timeframe of the rebuttal period.
 2. FICC has not been evaluated on the Procgen. Moreover, whether its MCTS-based backbone EfficientZero (EZ)[3] is applicable to procedurally generated environments remains an open question. This lack of information—such as hyperparameter settings and EZ framework in Procgen—leaves us unable to ensure the validity of our reproductions.
@@ -141,18 +141,21 @@ Following your suggestion, we attempt experiments on the 'dog' and 'humanoid' do
 **Table II**
 |  | BCV-LR  | LAIFO   | BCO  |UPESV |TACO  | DrQv2| / |video|
 | - | - | - | - | - | - |  - | - | - |
-| humanoid_walk-100k |1.3 ± 0.1  | 1.1 ± 0.0 | |  | 2.0 ± 0.2 | 1.9 ± 0.2| |529|
+| humanoid_walk-100k |1.3 ± 0.1  | 1.1 ± 0.0 | 1.1 ± 0.1 | 1.0 ± 0.1 | 2.0 ± 0.2 | 1.9 ± 0.2| |529|
 
 ___
 >**Q2:The author mention that during self-supervised representation learning phase, it also learns some temporal dynamics by aligning representation of $o_t$ with $o_{t+1}$, but this seems not appearing in Equation 1. So what's the overall objective for this stage. Is it Equation 1 (contrastive loss with image reconstruction ) plus temporal loss?**
 
-As shown in Sec.3.1.1 (line 174, main paper), BCV-LR is designed to be easily compatible with any action-free self-supervised tasks (it completely decouples visual learning from subsequent training), and it can adapt to different types of tasks by choosing appropriate self-supervised objectives. To this end, we apply different latent feature training losses for Procgen and DMControl. Concretely, we employ the 'contrastive loss with image reconstruction' (Eq.1, line 185, main paper) for Procgen video games, because it has been proven effective in these kinds of tasks [1,2]. For DMControl environments where the temporal understanding is crucial, we choose another temporal association loss (Eq.10, line 549, Appendix) because invoving temporal information into self-supervised objectives have been proven necessary in DMControl [3]. In summary, BCV-LR can involve more advanced self-supervised objectives for more challenging tasks if necessary, which makes its potential not limited to specific environments.
+As shown in Sec.3.1.1 (line 174, main paper), BCV-LR is designed to be easily compatible with any action-free self-supervised tasks (it completely decouples visual learning from subsequent training), and it can adapt to different types of tasks by choosing appropriate self-supervised objectives. To this end, we apply different latent feature training losses for Procgen and DMControl. Concretely, we employ the 'contrastive loss with image reconstruction' (Eq.1, line 185, main paper) for Procgen video games, because it has been proven effective in these kinds of tasks [1,2]. For DMControl environments where the temporal understanding is crucial, we choose another prototype-based temporal association loss (Eq.10, line 549, Appendix) because invoving temporal information into self-supervised objectives have been proven necessary in DMControl [3]. In summary, BCV-LR can involve more advanced self-supervised objectives for more challenging tasks if necessary, which makes its potential not limited to specific environments.
 
 ___
 >**Q3:The reconstruction loss of feature learning seems suboptimal especially for environments with distracting backgrounds. The authors mention that they get better performance with this loss added. But is it because the visual observations of the environments it tests on are too simple?**
 
-As we explain in our answer to Q2, BCV-LR employs the reconstruction loss in video games because of its effectiveness in both previous work [1] and our experiments, while it is not limited to a certain self-supervised task. We agree with your opinion on reconstruction loss and some previous works have demonstrated the limitation of reconstruction when faced with visual distraction
+We agree with your opinion on reconstruction loss and some previous works [6] have demonstrated the limitation of reconstruction when faced with visual distraction. As we explain in our answer to Q2, BCV-LR employs the reconstruction loss in Procgen because of its effectiveness in video games [1], but it is not limited to this reconstruction loss. BCV-LR is designed to be easily compatible with any action-free self-supervised tasks (it completely decouples visual learning from subsequent training), and it can adapt to different types of tasks by choosing appropriate self-supervised objectives. To this end, BCV-LR can involve more advanced self-supervised objectives (e.g., ViT-based masked reconstruction [4,5] or distraction-robust prototypical representation [6]) for more challenging tasks if necessary. In addition, BCV-LR can also be combined with an off-the-shelf, well-trained encoder, which makes its potential not limited to both tasks and experimental settings. Considering your concern, we would like to add above discussion in the 'Limitation and Future Work' section to inspire more thinking.
 
+___
+>**Q4:A very relevant work [1] is missing.**
+We appreciate your careful reading, and now have supplemented the discussion of FICC [1] in the related work. Thank you!
 
 ___
 [1]Become a Proficient Player with Limited Data through Watching Pure Videos. ICLR 2023
@@ -160,6 +163,7 @@ ___
 [3]Reinforcement learning with prototypical representations. ICML 2021
 [4]Masked world models for visual control. CoRL 2023
 [5]Mask-based Latent Reconstruction for Reinforcement Learning. Neurips 2022
+[6]Dreamerpro: Reconstruction-free model-based reinforcement learning with prototypical representations. ICML 2022
 
 
 
