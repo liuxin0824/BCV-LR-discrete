@@ -1,7 +1,7 @@
 # BCV-LR
-### R1
+## R1
 
-We appreciate your careful reading and professional comments! In response to your feedback, we have supplemented the missing related works and further conduct several supplementary experiments, which greatly improves the quality of the paper. We hope these revisions will meet your expectations!
+We appreciate your careful reading, professional comments, and affirmation of our paper! In response to your feedback, we have supplemented the missing related works and further conduct several supplementary experiments, which greatly improves the quality of the paper. We hope these revisions will meet your expectations!
 
 ___
 >**W1:I am not sure whether the offline stage is individually conducted on each task or jointly conducted on a multi-task dataset. The practical significance of video behavior cloning in a single-task setting is limited.**
@@ -101,13 +101,43 @@ ___
 [7]Decoupling representation learning from reinforcement learning.ICML21
 
 
-### R2
 
 
 
 
 
-### R3
+
+
+## R2
+We greatly appreciate the reviewer’s careful reading, detailed feedback, and recommendation of our paper! We have carefully reviewed your comments and further refined our paper based on your constructive reviews!
+
+___
+>**W1:The scope of the experiments are relatively limited. All experiments are conducted in simulation/"toy" environments (Procgen and DMControl). While these are standard benchmarks, it is unclear how well BCV-LR generalizes to internet-scale human videos and real-world robotics applications.**
+
+We understand your concern! Since it is highly challenging to balance video imitation performance and efficiency without access to expert actions or expert rewards, our experiments have primarily been conducted in relatively standard visual RL environments to answer this open question, and we have not extended our work to real-world tasks or considered internet-scale pre-training, which are of greater significance. Based on your feedback, we further conduct some extra experiments in Metaworld manipulation benchmark, which may demonstrate a wider application of BCV-LR.
+
+For each Metaworld task, only 50k environmental steps are allowed, with remaining settings similar to that of DMControl. Results are shown in Table III. In this interaction-limited situation, BCV-LR can still derive effective manipulation skills from expert videos without accessing expert actions and rewards, which demonstrates its wider range of applications and potential for generalizing to real-world manipulation tasks. Furthermore, we would like to add a discussion on real-world tasks and internet-scale knowledge transferring in the 'Limitation and Future Work' sections to make our paper more comprehensive.
+
+**Table I**
+|Metaworld-50k|BCV-LR|BCO|DrQv2|/|video|
+|-|-|-|-|-|-| 
+|Faucet-open|**0.82 ± 0.20**|0.13 ± 0.19|0.00 ± 0.00||1|
+|Reach|**0.63 ± 0.25**|0.03 ± 0.05|0.13 ± 0.12||1|
+|Drawer-open|**0.92 ± 0.12**|0.13 ± 0.09|0.00 ± 0.00||1|
+|Faucet-close|**0.98 ± 0.04**|0.00 ± 0.00|0.50 ± 0.28 ||1|
+|Mean SR|**0.84**|0.07|0.16||1|
+___
+>**Q1:For continuous control tasks, they are relatively easy with low-dimensional action spaces. I'm curious how would the proposed methods work for environments with high-dimensional action spaces. (For example, take humanoid & dog from Deepmind Control Suite)**
+
+
+
+
+
+
+
+
+
+## R3
 We are deeply grateful to the reviewer for your careful reading, constructive reviews, and strong recommendation! We have further enhanced our paper in light of your feedback by supplementing more experiments and discussions!
 ___
 >**Q1&Weakness2：Stage 3. (as per the summary above), in which the latent action model is finetuned and the action decoder is trained, requires real actions to be observed via environment interaction. It is unclear what is the impact of the schedule of environment interactions, how exactly the phases are optimally alternated so as to sample iteratively from the policy learned online via the concurrent step 4. Does this matter?**
@@ -136,7 +166,7 @@ ___
 
 >**Weakness3: The method as requested does require a source of ground truth actions from the videos, it is thus not strictly suitable for solving pressing hard problems for real world robotics, e.g. learning from real human videos and then transferring the policies to robots. This is also related to the benchmarks being limited to classic "toy RL" simulation environments.**
 
-We agree with your comment! Since it is highly challenging to balance video imitation performance and efficiency without access to expert actions or expert rewards, our experiments have primarily been conducted in relatively standard visual RL environments to answer this open question, and we have not extended our work to real-world tasks or considered large-scale cross-domain pre-training, which are of greater significance. Taking your comment into account, we further conduct some experiments in Metaworld manipulation benchmark, which may demonstrate a wider application of BCV-LR for robots. 
+We agree with your comment! Since it is highly challenging to balance video imitation performance and efficiency without access to expert actions or expert rewards, our experiments have primarily been conducted in relatively standard visual RL environments to answer this open question, and we have not extended our work to real-world tasks or considered large-scale cross-domain pre-training, which are of greater significance. Taking your comment into account, we further conduct some extra experiments in Metaworld manipulation benchmark, which may demonstrate a wider application of BCV-LR for robots. 
 
 For each Metaworld task, only 50k environmental steps are allowed, with remaining settings similar to that of DMControl. Results are shown in Table III. In this interaction-limited situation, BCV-LR can still derive effective manipulation skills from expert videos without accessing expert actions and rewards, which demonstrates its wider range of applications and potential for generalizing to real-world manipulation tasks. Furthermore, we would like to add a discussion on real-world tasks and cross-domain knowledge transferring in the 'Limitation and Future Work' sections to make our paper more comprehensive.
 
@@ -155,7 +185,13 @@ For each Metaworld task, only 50k environmental steps are allowed, with remainin
 
 
 
-### R4
+
+
+
+
+
+
+## R4
 We greatly appreciate the reviewer's careful reading and strong recognition of our work! We have carefully reviewed your comments, addressed your questions, and further improved our paper based on your feedback!
 ___
 >**Q1：How general is the learned encoder? Is the shift image + contrastive loss learn useful features for non-video games, say real world robotics tasks? Or will this only work for relatively simplistic videos/environments?**
