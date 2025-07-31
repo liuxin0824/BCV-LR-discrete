@@ -1,4 +1,4 @@
-# BCV-LR
+# BCV-LR rebuttal
 ## R1
 
 We appreciate your careful reading, professional comments, and affirmation of our paper! In response to your feedback, we have supplemented the missing related works and further conduct several supplementary experiments, which greatly improves the quality of the paper. We hope these revisions will meet your expectations!
@@ -108,6 +108,14 @@ ___
 
 
 
+
+
+
+
+
+
+
+
 ## R2
 We greatly appreciate the reviewer’s careful reading, detailed feedback, and recommendation of our paper! We have carefully reviewed your comments and further refined our paper based on your constructive reviews!
 
@@ -128,6 +136,24 @@ For each Metaworld task, only 50k environmental steps are allowed, with remainin
 |Mean SR|**0.84**|0.07|0.16||1|
 ___
 >**Q1:For continuous control tasks, they are relatively easy with low-dimensional action spaces. I'm curious how would the proposed methods work for environments with high-dimensional action spaces. (For example, take humanoid & dog from Deepmind Control Suite)**
+
+Following your suggestion, we attempt experiments on the 'dog' and 'humanoid' domains. We find that these two domains are highly challenging even for advanced RL methods that use expert rewards. Specifically, we first try training agents to collect expert data via RL, but observe that both TACO and DrQ fail within 5M steps. Furthermore, we run DrQv2 on the 'humanoid_walk' task for 20M steps across 4 seeds, with only 1 run successfully learning a policy. We use this 20M-step policy to collect data, and then train BCV-LR and all baselines under the 100k-step setting—all of which failed. (Table II) This indicates that complex dynamics and action spaces remain significant challenges for current policy learning algorithms, even when expert rewards are provided. Meanwhile, BCV-LR, which is designed to balance sample efficiency under more challenging settings (without access to rewards or expert actions), is not yet able to handle such tasks effectively. We would like to add the above discussion to the 'Limitations and Future Work' sections to make our paper more comprehensive.
+**Table II**
+|  | BCV-LR  | LAIFO   | BCO  |UPESV |TACO  | DrQv2| / |video|
+| - | - | - | - | - | - |  - | - | - |
+| humanoid_walk-100k | **604**   | 158  | 336  | 18     | 310  | 232 | |529|
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -178,6 +204,15 @@ For each Metaworld task, only 50k environmental steps are allowed, with remainin
 |Drawer-open|**0.92 ± 0.12**|0.13 ± 0.09|0.00 ± 0.00||1|
 |Faucet-close|**0.98 ± 0.04**|0.00 ± 0.00|0.50 ± 0.28 ||1|
 |Mean SR|**0.84**|0.07|0.16||1|
+
+
+
+
+
+
+
+
+
 
 
 
