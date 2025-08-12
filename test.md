@@ -1,0 +1,7 @@
+We sincerely thank the four professional reviewers, as well as the ACs and SACs, for their efforts invested in reviewing and processing our paper.
+
+**Contributions of our paper:** Our paper proposes a novel ILV (Imitation Learning from Videos) framework, BCV-LR, which successfully answers the open question: "Can videos support extremely sample-efficient visual policy learning, without relying on environmental rewards or expert actions?" We conduct extensive experiments of our method on 28 popular tasks across diverse domains (16 ProcGen tasks, 8 DMControl tasks, and 4 MetaWorld tasks), demonstrating its great sample efficiency advantages over several state-of-the-art online methods, including both ILV and RL approaches. 
+
+**Discussion with reviewers:** During the review phase, the four reviewers unanimously recognized the remarkable effectiveness of the proposed method and the clear presentation of the paper, and awarded favorable initial scores. In the rebuttal phase, we provided detailed responses to each of the weaknesses and questions raised by the four reviewers. We are delighted that our answers effectively addressed most of their concerns, leading to their consistent recommendation for the acceptance.
+
+Finally, we would like to once again thank the ACs and SACs for the time they invested in processing our manuscript. We also express our sincere gratitude once more to the four reviewers for their professional feedback and their recommendation of our paper.
