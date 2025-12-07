@@ -1,6 +1,7 @@
 # Videos are Sample-Efficient Supervisions: Behavior Cloning from Videos via Latent Representations 
 
 
+This repository provides the discrete implementation of BCV-LR. For continuous control, see [BCV-LR](https://github.com/liuxin0824/BCV-LR/).
 
 ## Instruction
 
