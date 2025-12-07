@@ -1,0 +1,46 @@
+env_name: starpilot
+exp_name: 20251206-213038starpilot
+stage_exp_name: ~ 
+
+
+model:
+  wm_scale: 24
+  idm_impala_scale: 4
+  policy_impala_scale: 4
+  vq:
+    enabled: true
+    num_codebooks: 2
+    num_discrete_latents: 4
+    emb_dim: 16
+    num_embs: 64 
+    commitment_cost: 0.05
+    decay: 0.999
+
+
+offline_pt:
+  lr: 3e-4
+  bs: 128
+  steps: 10000
+
+
+latent_policy_imitaiton:
+  lr: 2e-4
+  bs: 128
+  steps: 20000 
+
+
+online_ft:
+  num_envs: 64
+  num_steps: 64
+  gamma: 0.999
+
+
+ta_idm_lr: 2e-5
+wm_collect_lr: -1 
+idm_times: 60
+policy_times: 500
+
+wm_loss_alpha: 15  
+buffer_size: 20000
+
+wm_opt_lr: 3e-4
