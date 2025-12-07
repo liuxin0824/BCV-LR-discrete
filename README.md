@@ -1,6 +1,9 @@
 # Videos are Sample-Efficient Supervisions: Behavior Cloning from Videos via Latent Representations 
 
 
+![Example Image](BCV-LR.png)
+
+
 This repository provides the discrete implementation of BCV-LR. For continuous control, see [BCV-LR](https://github.com/liuxin0824/BCV-LR/).
 
 
@@ -13,32 +16,63 @@ expert_data
    --- starpilot
       --- train
       --- test
-   ...
+   --- bigfish
+      --- train
+      --- test
+...
 ```
 
-## Instruction
+## Conda env
 
 Enter the repository and use conda to create a environment.
 ```
-cd CRPTpro
+cd BCV-LR-discrete
 
-conda env create -f conda_env.yml
+conda env create -f environment.yml
 ```
 
 Use tmux to create a terminal (optional) and then enter the created conda environment:
 ```
 tmux
 
-conda activate CRPTpro
+conda activate BCV-LR
 ```
 
 
-Run the experiments. 
+## Offline stage
+
+To achieve offline pretraining on videos and obtain pre-trained models, run:
 
 ```
-python train.py
+python run_offline.py
 ```
-The data collection, pre-training, and downstream RL are all included.
+
+You will find the pre-trained models in the folder exp_results, like:
+
+```
+exp_results
+   --- 20251206
+      --- 213038starpilot
+         --- model.pt......
+...
+```
+
+## Online stage
+
+revise the exp_name in the config.yaml to match the offline pre-trained models. For example, to run the starpilot experiments above, you should revise the exp_name to:
+```
+###config.yaml
+exp_name: 20251206-213038starpilot
+```
+
+then you can run the online stage and see the results in wandb:
+```
+python run_online.py
+```
+
+
+
+
 
 
 
